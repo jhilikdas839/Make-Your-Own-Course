@@ -1,85 +1,208 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="w-full bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <nav className="w-full bg-[#f8f8f5] px-4 pt-4 md:px-6">
 
-        {/* Logo */}
-        <div className="text-2xl font-bold text-black font-inter">
-          Make <span className="italic text-primary">Your Own</span>  Course
-        </div>
+      {/* Navbar Container */}
+      <div className="max-w-7xl mx-auto">
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8 font-inter">
+        <div className="bg-white border border-gray-200 rounded-2xl px-5 py-3 md:px-7 shadow-sm">
 
-          <NavLink className={({isActive})=>`text-black  font-bold ${isActive ?"text-primary":""}` } to="/" >Home</NavLink>
+          <div className="flex items-center justify-between">
 
-          <a href="#" className="text-black hover:text-primary">
-            Courses
-          </a>
 
-    
-          <a href="#" className="text-black hover:text-primary">
-            Contact
-          </a>
-        </div>
+            {/* ================= LOGO ================= */}
+            <Link
+              to="/"
+              className="font-inter text-xl md:text-2xl font-bold tracking-tight text-[#10131d]"
+            >
+              Make
 
-        {/* Login / Signup */}
-        <div className="hidden md:flex items-center gap-3 font-inter">
-          <button className="px-5 py-2 bg-primary text-white rounded-lg hover:bg-primary transition">
-            <Link to='/login'>Login</Link>
-          </button>
+              <span className="italic text-primary ml-1">
+                Your Own
+              </span>
 
-          <button className="px-5 py-2 bg-primary text-white rounded-lg hover:bg-primary transition">
-            <Link to='/signup'>Signup</Link>
-          </button>
-        </div>
+              <span className="ml-1">
+                Course
+              </span>
+            </Link>
 
-        {/* Mobile Menu Icon */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-2xl text-sec"
-        >
-          <i className={menuOpen ? "ri-close-line" : "ri-menu-line"}></i>
-        </button>
-      </div>
 
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden px-6 pb-5 font-inter">
+            {/* ================= DESKTOP MENU ================= */}
+            <div className="hidden md:flex items-center gap-8">
 
-          <div className="flex flex-col gap-4 border-t pt-4">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `relative font-inter text-sm font-medium transition ${
+                    isActive
+                      ? "text-primary"
+                      : "text-gray-600 hover:text-black"
+                  }`
+                }
+              >
+                Home
+              </NavLink>
 
-            <NavLink className="text-black" to="/" >Home</NavLink>
 
-           
+              <NavLink
+                to="/courses"
+                className={({ isActive }) =>
+                  `font-inter text-sm font-medium transition ${
+                    isActive
+                      ? "text-primary"
+                      : "text-gray-600 hover:text-black"
+                  }`
+                }
+              >
+                Courses
+              </NavLink>
 
-            <a href="#" className="text-black">
-              Courses
-            </a>
 
-            <a href="#" className="text-black">
-              Contact
-            </a>
+              <NavLink
+                to="/contact"
+                className={({ isActive }) =>
+                  `font-inter text-sm font-medium transition ${
+                    isActive
+                      ? "text-primary"
+                      : "text-gray-600 hover:text-black"
+                  }`
+                }
+              >
+                Contact
+              </NavLink>
 
-            <div className="flex gap-3 pt-2">
-              <button className="px-5 py-2 bg-primary text-white rounded-lg">
-               <Link className="font-inter" to='/login'>Login</Link>
-              </button>
-
-              <button className="px-5 py-2 bg-primary text-white rounded-lg">
-                <Link className="font-inter" to='/signup'>Signup</Link>
-              </button>
             </div>
 
+
+            {/* ================= DESKTOP BUTTONS ================= */}
+            <div className="hidden md:flex items-center gap-2">
+
+              <Link
+                to="/login"
+                className="px-5 py-2.5 rounded-xl text-sm font-medium text-[#10131d] transition hover:bg-gray-100"
+              >
+                Login
+              </Link>
+
+
+              <Link
+                to="/signup"
+                className="px-5 py-2.5 rounded-xl bg-[#10131d] text-sm font-medium text-white transition duration-300 hover:bg-primary"
+              >
+                Get Started
+              </Link>
+
+            </div>
+
+
+            {/* ================= MOBILE MENU BUTTON ================= */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden flex h-10 w-10 items-center justify-center rounded-xl bg-[#10131d] text-xl text-white"
+            >
+              <i
+                className={
+                  menuOpen
+                    ? "ri-close-line"
+                    : "ri-menu-line"
+                }
+              ></i>
+            </button>
+
           </div>
+
+
+          {/* ================= MOBILE MENU ================= */}
+          {menuOpen && (
+            <div className="md:hidden">
+
+              <div className="mt-4 border-t border-gray-200 pt-4">
+
+                <div className="flex flex-col gap-1">
+
+                  <NavLink
+                    to="/"
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `rounded-lg px-4 py-3 font-inter text-sm font-medium transition ${
+                        isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-gray-700 hover:bg-gray-100"
+                      }`
+                    }
+                  >
+                    Home
+                  </NavLink>
+
+
+                  <NavLink
+                    to="/courses"
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `rounded-lg px-4 py-3 font-inter text-sm font-medium transition ${
+                        isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-gray-700 hover:bg-gray-100"
+                      }`
+                    }
+                  >
+                    Courses
+                  </NavLink>
+
+
+                  <NavLink
+                    to="/contact"
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `rounded-lg px-4 py-3 font-inter text-sm font-medium transition ${
+                        isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-gray-700 hover:bg-gray-100"
+                      }`
+                    }
+                  >
+                    Contact
+                  </NavLink>
+
+                </div>
+
+
+                {/* Mobile Buttons */}
+                <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200">
+
+                  <Link
+                    to="/login"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex-1 text-center rounded-xl border border-gray-200 px-4 py-3 text-sm font-medium text-[#10131d] hover:bg-gray-100"
+                  >
+                    Login
+                  </Link>
+
+
+                  <Link
+                    to="/signup"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex-1 text-center rounded-xl bg-[#10131d] px-4 py-3 text-sm font-medium text-white hover:bg-primary"
+                  >
+                    Get Started
+                  </Link>
+
+                </div>
+
+              </div>
+
+            </div>
+          )}
+
         </div>
-      )}
+
+      </div>
+
     </nav>
   );
 };

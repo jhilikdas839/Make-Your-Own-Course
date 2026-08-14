@@ -6,10 +6,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #118be9;
-  --color-sec: #1a14cc;
-  --color-white: #ffffff;
-  --color-black: #080808;
+  --color-primary: #118BE9;
+  --color-sec: #FDC700;
+  --color-white: #FFFFFF;
+  --color-black: #11141F;
   --font-inter: "Inter", sans-serif
   
   

@@ -1,93 +1,128 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import HeroImg from "../assets/HeroImg.png";
 
 const Home = () => {
   return (
-    <section className="min-h-[calc(100vh-80px)] bg-white flex items-center">
-      <div className="max-w-7xl mx-auto w-full px-6 py-12">
+    <section className="min-h-screen bg-[#f8f8f5] px-4 py-8 md:px-8">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      {/* Main Container */}
+      <div className="max-w-7xl mx-auto">
 
-          {/* LEFT SIDE - DETAILS */}
-          <div>
+        {/* ================= HERO ================= */}
+        <div className="relative min-h-[520px] flex flex-col items-center justify-center text-center overflow-hidden rounded-3xl bg-white border border-gray-200">
+
+          {/* LEFT DECORATION */}
+          <div className="absolute left-5 md:left-12 top-1/2 -translate-y-1/2 hidden sm:flex flex-col gap-3">
+
+            <div className="w-8 h-8 md:w-11 md:h-11 border border-gray-200 rounded-lg"></div>
+
+            <div className="w-8 h-8 md:w-11 md:h-11 bg-primary rounded-lg"></div>
+
+            <div className="w-8 h-8 md:w-11 md:h-11 border border-gray-200 rounded-lg"></div>
+
+            <div className="w-8 h-8 md:w-11 md:h-11 bg-yellow-400 rounded-lg"></div>
+
+          </div>
+
+
+          {/* RIGHT DECORATION */}
+          <div className="absolute right-5 md:right-12 top-1/2 -translate-y-1/2 hidden sm:flex flex-col gap-3">
+
+            <div className="flex gap-3">
+              <div className="w-8 h-8 md:w-11 md:h-11 border border-gray-200 rounded-lg"></div>
+              <div className="w-8 h-8 md:w-11 md:h-11 border border-gray-200 rounded-lg"></div>
+            </div>
+
+            <div className="flex gap-3">
+              <div className="w-8 h-8 md:w-11 md:h-11 bg-primary rounded-lg"></div>
+              <div className="w-8 h-8 md:w-11 md:h-11 border border-gray-200 rounded-lg"></div>
+            </div>
+
+            <div className="w-8 h-8 md:w-11 md:h-11 bg-yellow-400 rounded-lg ml-8"></div>
+
+          </div>
+
+
+          {/* HERO CONTENT */}
+          <div className="relative z-10 max-w-3xl px-6">
 
             {/* Small Text */}
-            <div className="flex items-center gap-2 mb-5">
-              <span className="w-8 h-0.5 bg-primary"></span>
-
-              <p className="font-inter italic font-medium text-primary uppercase tracking-wide">
-                Learn. <span className="font-medium italic text-black">Create.</span> Grow.
-              </p>
-            </div>
-
-            {/* Heading */}
-            <h1 className="font-inter text-4xl sm:text-5xl lg:text-6xl font-bold text-black leading-tight">
-              Create Your Own
-              <span className="block text-primary">
-                Online Course
-              </span>
-            </h1>
-
-            {/* Description */}
-            <p className="mt-6 text-gray-600 font-inter text-base sm:text-lg leading-7 max-w-xl">
-              Share your knowledge, create engaging courses, and help
-              students learn new skills. Build your course and start
-              teaching with ease.
+            <p className="mb-5 text-sm md:text-base font-medium text-primary">
+              Learn • Build • Grow
             </p>
 
-            {/* Buttons */}
-            <div className="flex flex-wrap gap-4 mt-8">
 
-              <Link
-                to="/signup"
-                className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-inter hover:bg-sec transition"
-              >
-                Start Creating
-                <i className="ri-arrow-right-line"></i>
-              </Link>
+            {/* Heading */}
+            <h1 className="font-inter text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight text-[#10131d]">
 
-              <Link
-                to="/courses"
-                className="flex items-center gap-2 border border-primary text-primary px-6 py-3 rounded-lg font-inter hover:bg-primary hover:text-white transition"
-              >
-                Explore Courses
-                <i className="ri-book-open-line"></i>
-              </Link>
+              One place for all
+
+              <span className="block">
+                your learning
+              </span>
+
+            </h1>
+
+
+            {/* Description */}
+            <p className="mx-auto mt-6 max-w-xl text-sm md:text-lg leading-7 text-gray-600">
+
+              Learn new skills, build your career, and grow with
+              practical courses designed to help you move forward.
+
+            </p>
+
+
+            {/* Button */}
+            <Link
+              to="/courses"
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#10131d] px-7 py-3.5 text-sm md:text-base font-medium text-white transition duration-300 hover:-translate-y-1 hover:bg-primary"
+            >
+
+              Explore Courses
+
+              <i className="ri-arrow-right-line"></i>
+
+            </Link>
+
+          </div>
+
+        </div>
+
+
+        {/* ================= BOTTOM CARDS ================= */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+
+
+          {/* CARD 1 */}
+          <div className="relative min-h-[220px] overflow-hidden rounded-2xl bg-primary p-6">
+
+            {/* Circle */}
+            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10"></div>
+
+            <div className="relative z-10">
+
+              <p className="text-3xl md:text-4xl font-bold text-white">
+                500+
+              </p>
+
+              <p className="mt-2 text-sm text-white/80">
+                Courses available
+              </p>
 
             </div>
 
-            {/* Small Stats */}
-            <div className="flex flex-wrap gap-8 mt-10 pt-6 border-t border-gray-200">
 
-              <div>
-                <h3 className="text-2xl font-bold text-primary font-inter">
-                  500+
-                </h3>
+            {/* Small Progress Bars */}
+            <div className="absolute bottom-6 left-6 right-6">
 
-                <p className="text-black font-medium font-inter text-sm">
-                  Courses
-                </p>
+              <div className="mb-2 flex justify-between text-xs text-white/80">
+                <span>Learning Progress</span>
+                <span>85%</span>
               </div>
 
-              <div>
-                <h3 className="text-2xl font-bold text-primary font-inter">
-                  10K+
-                </h3>
-
-                <p className="text-black font-medium font-inter text-sm">
-                  Students
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-2xl font-bold text-primary font-inter">
-                  100+
-                </h3>
-
-                <p className="text-black font-medium font-inter text-sm">
-                  Instructors
-                </p>
+              <div className="h-2 rounded-full bg-white/20">
+                <div className="h-2 w-[85%] rounded-full bg-white"></div>
               </div>
 
             </div>
@@ -95,39 +130,96 @@ const Home = () => {
           </div>
 
 
-          {/* RIGHT SIDE - IMAGE */}
-          <div className="relative flex justify-center">
+          {/* CARD 2 */}
+          <div className="min-h-[220px] rounded-2xl bg-[#11141f] p-6 text-white">
 
-            {/* Background Shape */}
-            <div className="absolute w-[80%] h-[80%] bg-gray-300 rounded-full blur-3xl"></div>
+            <p className="text-2xl md:text-3xl font-semibold leading-tight">
+              Build the skills
+              <br />
+              you want.
+            </p>
 
-            {/* Image Container */}
-            <div className="relative w-full max-w-lg">
 
-              <img
-                src={HeroImg}
-                alt="Online Course"
-                className="w-full h-auto object-cover rounded-2xl"
-              />
+            {/* Skill Pills */}
+            <div className="mt-7 flex flex-wrap gap-2">
 
-              {/* Floating Card */}
-              <div className="absolute bottom-5 left-5 bg-white shadow-lg rounded-xl px-5 py-4 flex items-center gap-3">
+              <div className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-black">
 
-                <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center">
-                  <i className="ri-graduation-cap-line text-xl text-white"></i>
-                </div>
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-black text-white">
+                  <i className="ri-code-line"></i>
+                </span>
 
-                <div>
-                  <p className="font-one text-primary">
-                    Start Learning
-                  </p>
+                Web Development
 
-                  <p className="text-sm text-gray-500 font-inter">
-                    Learn from experts
-                  </p>
+              </div>
+
+
+              <div className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-black">
+
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white">
+                  <i className="ri-palette-line"></i>
+                </span>
+
+                Design
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* CARD 3 */}
+          <div className="relative min-h-[220px] overflow-hidden rounded-2xl bg-yellow-400 p-6">
+
+            {/* Decorative Circle */}
+            <div className="absolute -bottom-12 -right-12 h-32 w-32 rounded-full bg-black/10"></div>
+
+
+            <div className="relative z-10">
+
+              <p className="max-w-xs text-2xl md:text-3xl font-semibold leading-tight text-[#11141f]">
+
+                Learn from
+                <br />
+                industry experts.
+
+              </p>
+
+
+              {/* Instructor Avatars */}
+              <div className="mt-7 flex items-center">
+
+                <div className="flex -space-x-3">
+
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-yellow-400 bg-gray-800 text-white">
+                    <i className="ri-user-line"></i>
+                  </div>
+
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-yellow-400 bg-blue-500 text-white">
+                    <i className="ri-user-line"></i>
+                  </div>
+
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-yellow-400 bg-primary text-white">
+                    <i className="ri-user-line"></i>
+                  </div>
+
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-yellow-400 bg-white text-black">
+                    +20
+                  </div>
+
                 </div>
 
               </div>
+
+
+              {/* Small Button */}
+              <Link
+                to="/signup"
+                className="mt-5 inline-flex rounded-full bg-white px-5 py-2 text-sm font-medium text-black transition hover:bg-black hover:text-white"
+              >
+                Get Started
+              </Link>
 
             </div>
 
@@ -136,6 +228,7 @@ const Home = () => {
         </div>
 
       </div>
+
     </section>
   );
 };
