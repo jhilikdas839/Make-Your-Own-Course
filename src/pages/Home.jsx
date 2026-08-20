@@ -1,5 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import CourseCom from '../components/CourseCom'
+import About from "../components/About";
+import WhyChooseUs from "../components/WhyChooseUs";
+import Categories from "../components/Categories";
+import Testimonials from "../components/Testimonials";
+import PopularInstructors from "../components/PopularInstructors";
+import LearningProcess from "../components/LearningProcess";
+import CTA from "../components/CTA";
 
 const Home = () => {
   return (
@@ -229,7 +237,18 @@ const Home = () => {
 
       </div>
 
+       <CourseCom />
+       <About />
+       <WhyChooseUs />
+       <Categories />
+       <PopularInstructors />
+       <Testimonials />
+       <LearningProcess />
+       <CTA />
+
     </section>
+
+   
   );
 };
 

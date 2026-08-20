@@ -1,7 +1,9 @@
 import React from 'react'
 import Navbar from './components/Nav'
+import Footer from './components/Footer'
 import Allroutes from './Routes/Allroutes'
 import Home from "./pages/Home"
+
 
 const App = () => {
   return (
@@ -10,6 +12,8 @@ const App = () => {
       <Navbar />
       
        <Allroutes />
+       <Footer />
+       
       
     </div>
   )

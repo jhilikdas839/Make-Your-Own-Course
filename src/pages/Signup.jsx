@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
+
+  const [role, setRole] = useState("");
+
   return (
     <div className="min-h-screen bg-[#f8f8f5] flex items-center justify-center px-4 py-8">
 
       {/* Main Container */}
+
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm">
 
 
         {/* ================= LEFT SIDE ================= */}
+
         <div className="hidden md:flex relative bg-[#10131d] p-10 lg:p-14 text-white flex-col justify-between overflow-hidden">
 
           {/* Decorative Shapes */}
@@ -24,6 +29,7 @@ const Signup = () => {
 
 
           {/* Logo */}
+
           <div className="relative z-10">
 
             <Link
@@ -41,6 +47,7 @@ const Signup = () => {
 
 
           {/* Main Content */}
+
           <div className="relative z-10">
 
             <p className="text-primary text-sm font-medium font-inter mb-4">
@@ -62,6 +69,7 @@ const Signup = () => {
 
 
             {/* Small Stats */}
+
             <div className="flex gap-8 mt-8">
 
               <div>
@@ -102,6 +110,7 @@ const Signup = () => {
 
 
           {/* Bottom Text */}
+
           <div className="relative z-10">
 
             <p className="text-sm text-gray-500 font-inter">
@@ -114,9 +123,12 @@ const Signup = () => {
 
 
         {/* ================= RIGHT SIDE ================= */}
+
         <div className="p-7 sm:p-10 lg:p-12">
 
+
           {/* Heading */}
+
           <div className="mb-7">
 
             <p className="text-primary text-sm font-medium font-inter mb-2">
@@ -134,11 +146,13 @@ const Signup = () => {
           </div>
 
 
-          {/* Signup Form */}
+          {/* ================= SIGNUP FORM ================= */}
+
           <form className="space-y-4">
 
 
             {/* Full Name */}
+
             <div>
 
               <label className="block mb-2 text-sm font-medium text-[#10131d] font-inter">
@@ -161,6 +175,7 @@ const Signup = () => {
 
 
             {/* Email */}
+
             <div>
 
               <label className="block mb-2 text-sm font-medium text-[#10131d] font-inter">
@@ -182,7 +197,90 @@ const Signup = () => {
             </div>
 
 
+            {/* ================= ROLE ================= */}
+
+            <div>
+
+              <label className="block mb-2 text-sm font-medium text-[#10131d] font-inter">
+                I want to sign up as
+              </label>
+
+
+              <div className="grid grid-cols-2 gap-3">
+
+
+                {/* Student */}
+
+                <button
+                  type="button"
+                  onClick={() => setRole("student")}
+                  className={`p-4 rounded-xl border text-left transition duration-200 ${
+                    role === "student"
+                      ? "border-primary bg-primary/5 ring-2 ring-primary/10"
+                      : "border-gray-200 bg-gray-50 hover:border-gray-300"
+                  }`}
+                >
+
+                  <div
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center text-lg ${
+                      role === "student"
+                        ? "bg-primary text-white"
+                        : "bg-white text-gray-500"
+                    }`}
+                  >
+                    <i className="ri-graduation-cap-line"></i>
+                  </div>
+
+                  <p className="mt-3 text-sm font-semibold text-[#10131d] font-inter">
+                    Student
+                  </p>
+
+                  <p className="mt-1 text-xs text-gray-500 font-inter">
+                    Learn new skills
+                  </p>
+
+                </button>
+
+
+                {/* Teacher */}
+
+                <button
+                  type="button"
+                  onClick={() => setRole("teacher")}
+                  className={`p-4 rounded-xl border text-left transition duration-200 ${
+                    role === "teacher"
+                      ? "border-primary bg-primary/5 ring-2 ring-primary/10"
+                      : "border-gray-200 bg-gray-50 hover:border-gray-300"
+                  }`}
+                >
+
+                  <div
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center text-lg ${
+                      role === "teacher"
+                        ? "bg-primary text-white"
+                        : "bg-white text-gray-500"
+                    }`}
+                  >
+                    <i className="ri-presentation-line"></i>
+                  </div>
+
+                  <p className="mt-3 text-sm font-semibold text-[#10131d] font-inter">
+                    Teacher
+                  </p>
+
+                  <p className="mt-1 text-xs text-gray-500 font-inter">
+                    Create & teach
+                  </p>
+
+                </button>
+
+              </div>
+
+            </div>
+
+
             {/* Password */}
+
             <div>
 
               <label className="block mb-2 text-sm font-medium text-[#10131d] font-inter">
@@ -205,6 +303,7 @@ const Signup = () => {
 
 
             {/* Confirm Password */}
+
             <div>
 
               <label className="block mb-2 text-sm font-medium text-[#10131d] font-inter">
@@ -227,6 +326,7 @@ const Signup = () => {
 
 
             {/* Terms */}
+
             <div className="flex items-start gap-2 pt-1">
 
               <input
@@ -235,19 +335,18 @@ const Signup = () => {
               />
 
               <p className="text-xs sm:text-sm text-gray-500 font-inter leading-5">
-
                 I agree to the{" "}
 
                 <span className="text-primary cursor-pointer hover:text-sec">
                   Terms & Conditions
                 </span>
-
               </p>
 
             </div>
 
 
             {/* Signup Button */}
+
             <button
               type="submit"
               className="w-full bg-[#10131d] text-white py-3.5 rounded-xl font-medium font-inter transition duration-300 hover:bg-primary hover:-translate-y-0.5"
@@ -262,6 +361,7 @@ const Signup = () => {
 
 
           {/* Divider */}
+
           <div className="flex items-center gap-4 my-6">
 
             <div className="h-px bg-gray-200 flex-1"></div>
@@ -276,6 +376,7 @@ const Signup = () => {
 
 
           {/* Login */}
+
           <div className="text-center">
 
             <p className="text-sm text-gray-500 font-inter">

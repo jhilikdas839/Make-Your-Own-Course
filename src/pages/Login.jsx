@@ -40,7 +40,7 @@ const Login = () => {
           {/* Main Text */}
           <div className="relative z-10">
 
-            <p className="text-primary text-sm font-medium mb-4">
+            <p className="text-primary text-sm font-medium mb-4 font-inter">
               LEARN • CREATE • GROW
             </p>
 
@@ -89,7 +89,7 @@ const Login = () => {
           </div>
 
 
-          {/* Login Form */}
+          {/* ================= LOGIN FORM ================= */}
           <form className="space-y-5">
 
 
@@ -169,13 +169,14 @@ const Login = () => {
               className="w-full bg-[#10131d] text-white py-3.5 rounded-xl font-medium font-inter transition duration-300 hover:bg-primary hover:-translate-y-0.5"
             >
               Login
+
               <i className="ri-arrow-right-line ml-2"></i>
             </button>
 
           </form>
 
 
-          {/* Divider */}
+          {/* ================= DIVIDER ================= */}
           <div className="flex items-center gap-4 my-7">
 
             <div className="h-px bg-gray-200 flex-1"></div>
@@ -189,8 +190,52 @@ const Login = () => {
           </div>
 
 
-          {/* Signup */}
-          <div className="text-center">
+          {/* ================= GOOGLE LOGIN ================= */}
+          <button
+            type="button"
+            className="w-full flex items-center justify-center gap-3 border border-gray-200 bg-white py-3.5 rounded-xl font-medium text-[#10131d] font-inter transition duration-300 hover:bg-gray-50 hover:border-gray-300"
+          >
+
+            {/* Google G Logo */}
+            <svg
+              className="w-5 h-5"
+              viewBox="0 0 48 48"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+
+              {/* Red */}
+              <path
+                fill="#EA4335"
+                d="M24 9.5c3.54 0 6.72 1.22 9.22 3.6l6.85-6.85C35.9 2.52 30.47 0 24 0 14.61 0 6.51 5.38 2.56 13.22l7.98 6.19C12.45 13.06 17.74 9.5 24 9.5z"
+              />
+
+              {/* Blue */}
+              <path
+                fill="#4285F4"
+                d="M46.5 24.5c0-1.6-.15-3.14-.43-4.64H24v9.08h12.65c-.54 2.92-2.17 5.39-4.63 7.04l7.48 5.81C43.87 37.65 46.5 31.61 46.5 24.5z"
+              />
+
+              {/* Yellow */}
+              <path
+                fill="#FBBC05"
+                d="M10.54 28.59A14.45 14.45 0 0 1 9.5 24c0-1.59.37-3.13 1.04-4.59l-7.98-6.19A23.92 23.92 0 0 0 0 24c0 3.86.93 7.5 2.56 10.78l7.98-6.19z"
+              />
+
+              {/* Green */}
+              <path
+                fill="#34A853"
+                d="M24 48c6.48 0 11.91-2.13 15.88-5.79l-7.48-5.81c-2.07 1.39-4.72 2.22-8.4 2.22-6.26 0-11.55-3.56-13.46-9.91l-7.98 6.19C6.51 42.62 14.61 48 24 48z"
+              />
+
+            </svg>
+
+            Continue with Google
+
+          </button>
+
+
+          {/* ================= SIGNUP ================= */}
+          <div className="text-center mt-7">
 
             <p className="text-sm text-gray-500 font-inter">
 
