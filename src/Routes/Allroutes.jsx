@@ -6,6 +6,7 @@ import Signup from "../pages/Signup";
 import Home from "../pages/Home";
 import Course from "../pages/Courses";
 import Contact from "../pages/Contact";
+import Dashboard from "../pages/Dashboard";
 
 const Allroutes = () => {
   return (
@@ -20,6 +21,7 @@ const Allroutes = () => {
         <Route path="/signup" element={<Signup />} />
         
         <Route path="/courses" element={<Course />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
       </Routes>
     </div>

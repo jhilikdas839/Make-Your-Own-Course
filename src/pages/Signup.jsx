@@ -1,14 +1,88 @@
+
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
 
+  // ================= STATES =================
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("");
+  const [terms, setTerms] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  // ================= SIGNUP FUNCTION =================
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
+    // Empty field validation
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !confirmPassword ||
+      !role
+    ) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    // Password validation
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    // Terms validation
+    if (!terms) {
+      alert("Please agree to the Terms & Conditions");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await axios.post(
+        "https://makeyourowncoursbackend.onrender.com/api/auth/register",
+        {
+          name,
+          email,
+          password,
+          role,
+        }
+      );
+
+      console.log("Signup Response:", res.data);
+
+      alert("Account created successfully!");
+
+      // Redirect to login
+      navigate("/login");
+
+    } catch (error) {
+      console.log("Signup Error:", error);
+
+      alert(
+        error.response?.data?.message ||
+        "Signup failed. Please try again."
+      );
+
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#f8f8f5] flex items-center justify-center px-4 py-8">
 
-      {/* Main Container */}
+      {/* ================= MAIN CONTAINER ================= */}
 
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm">
 
@@ -28,7 +102,7 @@ const Signup = () => {
           <div className="absolute bottom-10 right-20 w-6 h-6 border border-white/10 rounded-lg"></div>
 
 
-          {/* Logo */}
+          {/* ================= LOGO ================= */}
 
           <div className="relative z-10">
 
@@ -37,16 +111,18 @@ const Signup = () => {
               className="text-2xl font-bold font-inter"
             >
               Make{" "}
+
               <span className="italic text-primary">
                 Your Own
               </span>{" "}
+
               Course
             </Link>
 
           </div>
 
 
-          {/* Main Content */}
+          {/* ================= MAIN CONTENT ================= */}
 
           <div className="relative z-10">
 
@@ -55,10 +131,13 @@ const Signup = () => {
             </p>
 
             <h2 className="text-4xl lg:text-5xl font-bold leading-tight font-inter">
+
               Start building
+
               <span className="block">
                 your future.
               </span>
+
             </h2>
 
             <p className="mt-5 text-gray-400 leading-7 max-w-md font-inter">
@@ -68,7 +147,7 @@ const Signup = () => {
             </p>
 
 
-            {/* Small Stats */}
+            {/* ================= STATS ================= */}
 
             <div className="flex gap-8 mt-8">
 
@@ -109,7 +188,7 @@ const Signup = () => {
           </div>
 
 
-          {/* Bottom Text */}
+          {/* ================= BOTTOM TEXT ================= */}
 
           <div className="relative z-10">
 
@@ -127,7 +206,7 @@ const Signup = () => {
         <div className="p-7 sm:p-10 lg:p-12">
 
 
-          {/* Heading */}
+          {/* ================= HEADING ================= */}
 
           <div className="mb-7">
 
@@ -148,10 +227,13 @@ const Signup = () => {
 
           {/* ================= SIGNUP FORM ================= */}
 
-          <form className="space-y-4">
+          <form
+            onSubmit={handleSignup}
+            className="space-y-4"
+          >
 
 
-            {/* Full Name */}
+            {/* ================= FULL NAME ================= */}
 
             <div>
 
@@ -166,6 +248,8 @@ const Signup = () => {
                 <input
                   type="text"
                   placeholder="Enter your full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   className="w-full border border-gray-200 bg-gray-50 rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-inter transition focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
 
@@ -174,7 +258,7 @@ const Signup = () => {
             </div>
 
 
-            {/* Email */}
+            {/* ================= EMAIL ================= */}
 
             <div>
 
@@ -189,6 +273,8 @@ const Signup = () => {
                 <input
                   type="email"
                   placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full border border-gray-200 bg-gray-50 rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-inter transition focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
 
@@ -209,7 +295,7 @@ const Signup = () => {
               <div className="grid grid-cols-2 gap-3">
 
 
-                {/* Student */}
+                {/* ================= STUDENT ================= */}
 
                 <button
                   type="button"
@@ -228,7 +314,9 @@ const Signup = () => {
                         : "bg-white text-gray-500"
                     }`}
                   >
+
                     <i className="ri-graduation-cap-line"></i>
+
                   </div>
 
                   <p className="mt-3 text-sm font-semibold text-[#10131d] font-inter">
@@ -242,7 +330,7 @@ const Signup = () => {
                 </button>
 
 
-                {/* Teacher */}
+                {/* ================= TEACHER ================= */}
 
                 <button
                   type="button"
@@ -261,7 +349,9 @@ const Signup = () => {
                         : "bg-white text-gray-500"
                     }`}
                   >
+
                     <i className="ri-presentation-line"></i>
+
                   </div>
 
                   <p className="mt-3 text-sm font-semibold text-[#10131d] font-inter">
@@ -279,7 +369,7 @@ const Signup = () => {
             </div>
 
 
-            {/* Password */}
+            {/* ================= PASSWORD ================= */}
 
             <div>
 
@@ -294,6 +384,8 @@ const Signup = () => {
                 <input
                   type="password"
                   placeholder="Create a password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full border border-gray-200 bg-gray-50 rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-inter transition focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
 
@@ -302,7 +394,7 @@ const Signup = () => {
             </div>
 
 
-            {/* Confirm Password */}
+            {/* ================= CONFIRM PASSWORD ================= */}
 
             <div>
 
@@ -317,6 +409,8 @@ const Signup = () => {
                 <input
                   type="password"
                   placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   className="w-full border border-gray-200 bg-gray-50 rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-inter transition focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
 
@@ -325,42 +419,53 @@ const Signup = () => {
             </div>
 
 
-            {/* Terms */}
+            {/* ================= TERMS ================= */}
 
             <div className="flex items-start gap-2 pt-1">
 
               <input
                 type="checkbox"
+                checked={terms}
+                onChange={(e) => setTerms(e.target.checked)}
                 className="mt-1 h-4 w-4 accent-primary"
               />
 
               <p className="text-xs sm:text-sm text-gray-500 font-inter leading-5">
+
                 I agree to the{" "}
 
                 <span className="text-primary cursor-pointer hover:text-sec">
                   Terms & Conditions
                 </span>
+
               </p>
 
             </div>
 
 
-            {/* Signup Button */}
+            {/* ================= SIGNUP BUTTON ================= */}
 
             <button
               type="submit"
-              className="w-full bg-[#10131d] text-white py-3.5 rounded-xl font-medium font-inter transition duration-300 hover:bg-primary hover:-translate-y-0.5"
+              disabled={loading}
+              className="w-full bg-[#10131d] text-white py-3.5 rounded-xl font-medium font-inter transition duration-300 hover:bg-primary hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Create Account
 
-              <i className="ri-arrow-right-line ml-2"></i>
+              {loading
+                ? "Creating Account..."
+                : "Create Account"
+              }
+
+              {!loading && (
+                <i className="ri-arrow-right-line ml-2"></i>
+              )}
 
             </button>
 
           </form>
 
 
-          {/* Divider */}
+          {/* ================= DIVIDER ================= */}
 
           <div className="flex items-center gap-4 my-6">
 
@@ -375,7 +480,7 @@ const Signup = () => {
           </div>
 
 
-          {/* Login */}
+          {/* ================= LOGIN ================= */}
 
           <div className="text-center">
 
@@ -403,3 +508,6 @@ const Signup = () => {
 };
 
 export default Signup;
+
+
+

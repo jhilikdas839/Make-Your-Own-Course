@@ -1,7 +1,43 @@
-import React from "react";
+import axios from 'axios';
+import {useState} from "react";
+import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 
+
 const Login = () => {
+  const navigate = useNavigate();
+ const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    axios.post("https://makeyourowncoursbackend.onrender.com/api/auth/login", {
+      email: email,
+      password: password
+    })
+    .then((response) => {
+      alert("Login successful!");
+      navigate("/dashboard");
+      console.log("Token:", response.data.token);
+      localStorage.setItem("token", response.data.token);
+      // Add redirect logic here (e.g., navigate("/dashboard"))
+
+    })
+    .catch((error) => {
+      console.error("Error logging in:", error);
+      if (error.response && error.response.status === 403) {
+        alert("Login failed! Please check your credentials.");
+      } else {
+        alert("Something went wrong connecting to the server.");
+      }
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+  };
   return (
     <div className="min-h-screen bg-[#f8f8f5] flex items-center justify-center px-4 py-10">
 
