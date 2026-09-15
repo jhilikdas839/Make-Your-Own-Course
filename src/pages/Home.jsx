@@ -9,10 +9,11 @@ import PopularInstructors from "../components/PopularInstructors";
 import LearningProcess from "../components/LearningProcess";
 import CTA from "../components/CTA";
 
+
 const Home = () => {
   return (
     <section className="min-h-screen bg-[#f8f8f5] px-4 py-8 md:px-8">
-
+ 
       {/* Main Container */}
       <div className="max-w-7xl mx-auto">
 
@@ -245,6 +246,7 @@ const Home = () => {
        <Testimonials />
        <LearningProcess />
        <CTA />
+     
 
     </section>
 

@@ -1,62 +1,122 @@
-import axios from 'axios';
-import {useState} from "react";
-import { useNavigate } from 'react-router-dom';
-import { Link } from "react-router-dom";
 
+import axios from "axios";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
- const [email, setEmail] = useState("");
+
+  // ================= STATES =================
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  // ================= LOGIN FUNCTION =================
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    
-    axios.post("https://makeyourowncoursbackend.onrender.com/api/auth/login", {
-      email: email,
-      password: password
-    })
-    .then((response) => {
-      alert("Login successful!");
-      navigate("/dashboard");
-      console.log("Token:", response.data.token);
-      localStorage.setItem("token", response.data.token);
-      // Add redirect logic here (e.g., navigate("/dashboard"))
 
-    })
-    .catch((error) => {
-      console.error("Error logging in:", error);
-      if (error.response && error.response.status === 403) {
-        alert("Login failed! Please check your credentials.");
-      } else {
-        alert("Something went wrong connecting to the server.");
+    // Validation
+    if (!email.trim()) {
+      alert("Please enter your email address.");
+      return;
+    }
+
+    if (!password.trim()) {
+      alert("Please enter your password.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // ================= API CALL =================
+      const response = await axios.post(
+        "https://makeyourowncoursbackend.onrender.com/api/auth/login",
+        {
+          email: email.trim(),
+          password: password,
+        }
+      );
+
+      console.log("Login Response:", response.data);
+
+      // ================= TOKEN =================
+      const token = response.data?.token;
+
+      if (token) {
+        if (rememberMe) {
+          localStorage.setItem("token", token);
+        } else {
+          sessionStorage.setItem("token", token);
+        }
       }
-    })
-    .finally(() => {
+
+      // ================= SUCCESS =================
+      alert("Login successful!");
+
+      // Redirect to dashboard
+      navigate("/dashboard");
+
+    } catch (error) {
+      console.error("Login Error:", error);
+
+      // ================= ERROR HANDLING =================
+      if (error.response) {
+        const status = error.response.status;
+
+        if (status === 401 || status === 403) {
+          alert("Login failed! Please check your email and password.");
+        } else if (status === 404) {
+          alert("Login API not found. Please check the API URL.");
+        } else if (status === 422) {
+          alert(
+            error.response.data?.message ||
+            "Please enter valid login details."
+          );
+        } else if (status >= 500) {
+          alert("Server error. Please try again later.");
+        } else {
+          alert(
+            error.response.data?.message ||
+            "Something went wrong. Please try again."
+          );
+        }
+      } else if (error.request) {
+        alert(
+          "Unable to connect to the server. Please check your backend."
+        );
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+
+    } finally {
       setLoading(false);
-    });
+    }
   };
+
   return (
     <div className="min-h-screen bg-[#f8f8f5] flex items-center justify-center px-4 py-10">
 
-      {/* Main Container */}
+      {/* ================= MAIN CONTAINER ================= */}
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm">
 
+        {/* ========================================================= */}
+        {/* ================= LEFT SIDE ============================= */}
+        {/* ========================================================= */}
 
-        {/* ================= LEFT SIDE ================= */}
         <div className="hidden md:flex relative bg-[#10131d] p-10 lg:p-14 text-white flex-col justify-between overflow-hidden">
 
-          {/* Decorative Squares */}
+          {/* Decorative Square - Top Right */}
           <div className="absolute top-10 right-10 w-12 h-12 border border-white/10 rounded-xl"></div>
 
+          {/* Decorative Square - Primary */}
           <div className="absolute top-24 right-24 w-8 h-8 bg-primary rounded-lg"></div>
 
+          {/* Decorative Square - Bottom Left */}
           <div className="absolute bottom-20 left-10 w-10 h-10 bg-yellow-400 rounded-lg"></div>
 
-
-          {/* Logo */}
+          {/* ================= LOGO ================= */}
           <div className="relative z-10">
 
             <Link
@@ -72,8 +132,7 @@ const Login = () => {
 
           </div>
 
-
-          {/* Main Text */}
+          {/* ================= MAIN TEXT ================= */}
           <div className="relative z-10">
 
             <p className="text-primary text-sm font-medium mb-4 font-inter">
@@ -95,19 +154,21 @@ const Login = () => {
 
           </div>
 
-
-          {/* Bottom Text */}
+          {/* ================= BOTTOM TEXT ================= */}
           <div className="relative z-10 text-sm text-gray-500 font-inter">
             Learn something new every day.
           </div>
 
         </div>
 
+        {/* ========================================================= */}
+        {/* ================= RIGHT SIDE ============================ */}
+        {/* ========================================================= */}
 
-        {/* ================= RIGHT SIDE ================= */}
         <div className="p-7 sm:p-10 lg:p-14">
 
-          {/* Heading */}
+          {/* ================= HEADING ================= */}
+
           <div className="mb-8">
 
             <p className="text-primary text-sm font-medium font-inter mb-2">
@@ -124,25 +185,39 @@ const Login = () => {
 
           </div>
 
+          {/* ========================================================= */}
+          {/* ================= LOGIN FORM ============================ */}
+          {/* ========================================================= */}
 
-          {/* ================= LOGIN FORM ================= */}
-          <form className="space-y-5">
+          <form
+            className="space-y-5"
+            onSubmit={handleLogin}
+          >
 
+            {/* ================= EMAIL ================= */}
 
-            {/* Email */}
             <div>
 
-              <label className="block mb-2 text-sm font-medium text-[#10131d] font-inter">
+              <label
+                htmlFor="email"
+                className="block mb-2 text-sm font-medium text-[#10131d] font-inter"
+              >
                 Email Address
               </label>
 
               <div className="relative">
 
+                {/* Email Icon */}
                 <i className="ri-mail-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
 
                 <input
+                  id="email"
+                  name="email"
                   type="email"
                   placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
                   className="w-full border border-gray-200 bg-gray-50 rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-inter transition focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
 
@@ -150,13 +225,16 @@ const Login = () => {
 
             </div>
 
+            {/* ================= PASSWORD ================= */}
 
-            {/* Password */}
             <div>
 
               <div className="flex items-center justify-between mb-2">
 
-                <label className="text-sm font-medium text-[#10131d] font-inter">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-medium text-[#10131d] font-inter"
+                >
                   Password
                 </label>
 
@@ -171,11 +249,17 @@ const Login = () => {
 
               <div className="relative">
 
+                {/* Password Icon */}
                 <i className="ri-lock-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
 
                 <input
+                  id="password"
+                  name="password"
                   type="password"
                   placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
                   className="w-full border border-gray-200 bg-gray-50 rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-inter transition focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
 
@@ -183,36 +267,56 @@ const Login = () => {
 
             </div>
 
+            {/* ================= REMEMBER ME ================= */}
 
-            {/* Remember Me */}
             <div className="flex items-center gap-2">
 
               <input
+                id="rememberMe"
+                name="rememberMe"
                 type="checkbox"
-                className="w-4 h-4 accent-primary"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="w-4 h-4 accent-primary cursor-pointer"
               />
 
-              <label className="text-sm text-gray-500 font-inter">
+              <label
+                htmlFor="rememberMe"
+                className="text-sm text-gray-500 font-inter cursor-pointer"
+              >
                 Remember me
               </label>
 
             </div>
 
+            {/* ================= LOGIN BUTTON ================= */}
 
-            {/* Login Button */}
             <button
               type="submit"
-              className="w-full bg-[#10131d] text-white py-3.5 rounded-xl font-medium font-inter transition duration-300 hover:bg-primary hover:-translate-y-0.5"
+              disabled={loading}
+              className="w-full bg-[#10131d] text-white py-3.5 rounded-xl font-medium font-inter transition duration-300 hover:bg-primary hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-[#10131d] disabled:hover:translate-y-0"
             >
-              Login
 
-              <i className="ri-arrow-right-line ml-2"></i>
+              {loading ? (
+                <>
+                  <i className="ri-loader-4-line animate-spin mr-2"></i>
+                  Logging in...
+                </>
+              ) : (
+                <>
+                  Login
+                  <i className="ri-arrow-right-line ml-2"></i>
+                </>
+              )}
+
             </button>
 
           </form>
 
+          {/* ========================================================= */}
+          {/* ================= DIVIDER =============================== */}
+          {/* ========================================================= */}
 
-          {/* ================= DIVIDER ================= */}
           <div className="flex items-center gap-4 my-7">
 
             <div className="h-px bg-gray-200 flex-1"></div>
@@ -225,14 +329,16 @@ const Login = () => {
 
           </div>
 
+          {/* ========================================================= */}
+          {/* ================= GOOGLE LOGIN ========================== */}
+          {/* ========================================================= */}
 
-          {/* ================= GOOGLE LOGIN ================= */}
           <button
             type="button"
             className="w-full flex items-center justify-center gap-3 border border-gray-200 bg-white py-3.5 rounded-xl font-medium text-[#10131d] font-inter transition duration-300 hover:bg-gray-50 hover:border-gray-300"
           >
 
-            {/* Google G Logo */}
+            {/* Google Logo */}
             <svg
               className="w-5 h-5"
               viewBox="0 0 48 48"
@@ -269,8 +375,10 @@ const Login = () => {
 
           </button>
 
+          {/* ========================================================= */}
+          {/* ================= SIGN UP =============================== */}
+          {/* ========================================================= */}
 
-          {/* ================= SIGNUP ================= */}
           <div className="text-center mt-7">
 
             <p className="text-sm text-gray-500 font-inter">
@@ -297,3 +405,4 @@ const Login = () => {
 };
 
 export default Login;
+
