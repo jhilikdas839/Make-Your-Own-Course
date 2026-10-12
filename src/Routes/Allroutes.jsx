@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Courses from "../pages/Courses";
+import Contact from "../pages/Contact";
 
 import DashboardLayout from "../components/DashboardLayout";
 import Dashboard from "../pages/Dashboard";
@@ -33,6 +34,7 @@ const Allroutes = () => {
       <Route path="/signup" element={<Signup />} />
 
       <Route path="/courses" element={<Courses />} />
+      <Route path="/contact" element={<Contact />} />
 
       {/* ================= DASHBOARD PAGES ================= */}
 
