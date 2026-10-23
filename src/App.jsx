@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useLocation } from "react-router-dom";
 
@@ -24,17 +25,20 @@ const App = () => {
     "/settings",
   ];
 
-  const isDashboard = dashboardPaths.includes(location.pathname);
+  const isStudentDashboard = dashboardPaths.includes(location.pathname);
+
+  // Hide public Navbar and Footer on all teacher pages
+  const isTeacherDashboard = location.pathname.startsWith("/teacher");
+
+  const hideNavbarFooter = isStudentDashboard || isTeacherDashboard;
 
   return (
     <div className="w-full">
-
-      {!isDashboard && <Navbar />}
+      {!hideNavbarFooter && <Navbar />}
 
       <Allroutes />
 
-      {!isDashboard && <Footer />}
-
+      {!hideNavbarFooter && <Footer />}
     </div>
   );
 };

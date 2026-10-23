@@ -22,6 +22,21 @@ import Sessions from "../pages/Sessions";
 import Billing from "../pages/Billing";
 import Settings from "../pages/Settings";
 
+// TEACHER PANEL ROUTES 
+
+import TeacherLayout from "../components/teacher/TeacherLayout";
+import TeacherDashboard from "../pages/teacher/TeacherDashboard";
+import TeacherCourses from "../pages/teacher/TeacherCourses";
+import CreateCourse from "../pages/teacher/CreateCourse";
+import CourseContent from "../pages/teacher/CourseContent";
+import TeacherStudents from "../pages/teacher/TeacherStudents";
+import TeacherAssignments from "../pages/teacher/TeacherAssignments";
+import TeacherAssessments from "../pages/teacher/TeacherAssessments";
+import TeacherLiveClasses from "../pages/teacher/TeacherLiveClasses";
+
+
+
+
 const Allroutes = () => {
   return (
     <Routes>
@@ -57,6 +72,25 @@ const Allroutes = () => {
         <Route path="/billing" element={<Billing />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
+
+
+{/* ================= TEACHER  DASHBOARD PAGES ================= */}
+
+
+<Route path="/teacher" element={<TeacherLayout />}>
+  <Route index element={<TeacherDashboard />} />
+   <Route path="courses" element={<TeacherCourses />} />
+   <Route path="create-course" element={<CreateCourse />} />
+    <Route path="courses/:id" element={<CourseContent />} />
+    <Route path="students" element={<TeacherStudents />} />
+    <Route path="assignments" element={<TeacherAssignments />} />
+    <Route path="assessments" element={<TeacherAssessments />} />
+    <Route path="live-classes" element={<TeacherLiveClasses />} />
+
+
+</Route>
+
+
     </Routes>
   );
 };
