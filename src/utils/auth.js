@@ -17,6 +17,14 @@ export const DEMO_USERS = {
   admin: { name: "Super Admin", email: "admin@myoc.dev", role: "admin" },
 };
 
+// Password for all demo accounts (only works when demo login is enabled).
+export const DEMO_PASSWORD = "demo123";
+
+export const findDemoUser = (email, password) =>
+  password === DEMO_PASSWORD
+    ? Object.values(DEMO_USERS).find((user) => user.email === email.trim().toLowerCase())
+    : undefined;
+
 export const isDemoLoginEnabled =
   import.meta.env.VITE_ENABLE_DEMO_LOGIN === "true";
 

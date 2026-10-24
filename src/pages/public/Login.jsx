@@ -6,7 +6,7 @@ import Modal from "../../components/common/Modal";
 import Button from "../../components/common/Button";
 import { useToast } from "../../components/common/toastContext";
 import { inputClass } from "../../components/common/formStyles";
-import { API_URL, DEMO_USERS, ROLE_HOME, isDemoLoginEnabled, saveSession } from "../../utils/auth";
+import { API_URL, DEMO_PASSWORD, DEMO_USERS, ROLE_HOME, findDemoUser, isDemoLoginEnabled, saveSession } from "../../utils/auth";
 
 const getErrorMessage = (error) => {
   if (!error.response) return "Unable to connect to the server. Please try again in a moment.";
@@ -41,6 +41,14 @@ const Login = () => {
     e.preventDefault();
     if (!email.trim() || !password.trim()) {
       toast("Please enter your email and password.", "error");
+      return;
+    }
+
+    // Demo accounts log in without the backend (only when demo login is enabled).
+    const demoUser = isDemoLoginEnabled && findDemoUser(email, password);
+    if (demoUser) {
+      saveSession({ token: `demo-${demoUser.role}`, user: demoUser }, rememberMe);
+      finishLogin(demoUser);
       return;
     }
 
@@ -380,6 +388,9 @@ const Login = () => {
           {isDemoLoginEnabled && (
               <div className="mt-7 rounded-2xl border border-dashed border-gray-300 p-4">
                 <p className="text-xs font-medium text-gray-500">Demo access (no backend needed)</p>
+                <p className="mt-1 text-[11px] leading-5 text-gray-400">
+                  Or log in with student@myoc.dev, teacher@myoc.dev or admin@myoc.dev and password {DEMO_PASSWORD}
+                </p>
                 <div className="mt-3 grid grid-cols-3 gap-2">
                   {["student", "teacher", "admin"].map((role) => (
                     <button

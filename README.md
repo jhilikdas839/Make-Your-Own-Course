@@ -28,6 +28,16 @@ npm run dev
 
 `.env` is git-ignored. Only `.env.example` is committed.
 
+### Demo accounts
+
+When `VITE_ENABLE_DEMO_LOGIN=true`, these work on the login page without the backend:
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Student | student@myoc.dev | demo123 |
+| Teacher | teacher@myoc.dev | demo123 |
+| Super admin | admin@myoc.dev | demo123 |
+
 ## Folder structure
 
 ```
