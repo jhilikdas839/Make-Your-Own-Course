@@ -5,40 +5,116 @@ const menuItems = [
   {
     title: "MAIN MENU",
     items: [
-      { name: "Dashboard", icon: "ri-dashboard-line", path: "/teacher" },
-      { name: "My Courses", icon: "ri-book-open-line", path: "/teacher/courses" },
-      { name: "Create Course", icon: "ri-add-circle-line", path: "/teacher/create-course" },
-      { name: "Students", icon: "ri-group-line", path: "/teacher/students" },
-      { name: "Assignments", icon: "ri-file-list-3-line", path: "/teacher/assignments" },
-      { name: "Assessments", icon: "ri-survey-line", path: "/teacher/assessments" },
-      { name: "Live Classes", icon: "ri-live-line", path: "/teacher/live-classes" },
-      { name: "Recordings", icon: "ri-video-line", path: "/teacher/recordings" },
-      { name: "Discussions", icon: "ri-chat-3-line", path: "/teacher/discussions" },
-      { name: "Announcements", icon: "ri-megaphone-line", path: "/teacher/announcements" },
+      {
+        name: "Dashboard",
+        icon: "ri-dashboard-line",
+        path: "/teacher",
+      },
+      {
+        name: "My Courses",
+        icon: "ri-book-open-line",
+        path: "/teacher/courses",
+      },
+      {
+        name: "Create Course",
+        icon: "ri-add-circle-line",
+        path: "/teacher/create-course",
+      },
+      {
+        name: "Students",
+        icon: "ri-group-line",
+        path: "/teacher/students",
+      },
+      {
+        name: "Assignments",
+        icon: "ri-file-list-3-line",
+        path: "/teacher/assignments",
+      },
+      {
+        name: "Assessments",
+        icon: "ri-survey-line",
+        path: "/teacher/assessments",
+      },
+      {
+        name: "Live Classes",
+        icon: "ri-live-line",
+        path: "/teacher/live-classes",
+      },
+      {
+        name: "Recordings",
+        icon: "ri-video-line",
+        path: "/teacher/recordings",
+      },
+      {
+        name: "Discussions",
+        icon: "ri-chat-3-line",
+        path: "/teacher/discussions",
+      },
+      {
+        name: "Announcements",
+        icon: "ri-megaphone-line",
+        path: "/teacher/announcements",
+      },
     ],
   },
   {
     title: "ANALYTICS",
     items: [
-      { name: "Course Analytics", icon: "ri-bar-chart-box-line", path: "/teacher/analytics" },
-      { name: "Student Progress", icon: "ri-line-chart-line", path: "/teacher/student-progress" },
-      { name: "Reviews & Ratings", icon: "ri-star-line", path: "/teacher/reviews" },
+      {
+        name: "Course Analytics",
+        icon: "ri-bar-chart-box-line",
+        path: "/teacher/course-analytics",
+      },
+      {
+        name: "Student Progress",
+        icon: "ri-line-chart-line",
+        path: "/teacher/student-progress",
+      },
+      {
+        name: "Reviews & Ratings",
+        icon: "ri-star-line",
+        path: "/teacher/reviews",
+      },
     ],
   },
   {
     title: "EARNINGS",
     items: [
-      { name: "Earnings Overview", icon: "ri-wallet-3-line", path: "/teacher/earnings" },
-      { name: "Transactions", icon: "ri-exchange-dollar-line", path: "/teacher/transactions" },
-      { name: "Payouts", icon: "ri-bank-card-line", path: "/teacher/payouts" },
+      {
+        name: "Earnings Overview",
+        icon: "ri-wallet-3-line",
+        path: "/teacher/earnings",
+      },
+      {
+        name: "Transactions",
+        icon: "ri-exchange-dollar-line",
+        path: "/teacher/transactions",
+      },
+      {
+        name: "Payouts",
+        icon: "ri-bank-card-line",
+        path: "/teacher/payouts",
+      },
     ],
   },
   {
     title: "ACCOUNT",
     items: [
-      { name: "Profile", icon: "ri-user-line", path: "/teacher/profile" },
-      { name: "Settings", icon: "ri-settings-3-line", path: "/teacher/settings" },
-      { name: "Help & Support", icon: "ri-customer-service-2-line", path: "/teacher/support" },
+      {
+        name: "Profile",
+        icon: "ri-user-line",
+        path: "/teacher/profile",
+      },
+      {
+        name: "Settings",
+        icon: "ri-settings-3-line",
+        path: "/teacher/settings",
+      },
+      {
+        name: "Help & Support",
+        icon: "ri-customer-service-2-line",
+        path: "/teacher/support",
+      },
     ],
   },
 ];
@@ -46,9 +122,8 @@ const menuItems = [
 function TeacherSidebar() {
   return (
     <aside className="flex h-screen w-[270px] shrink-0 flex-col border-r border-gray-200 bg-white">
-
       {/* Logo */}
-      <div className="flex h-[76px] items-center gap-3 border-b border-gray-100 px-6">
+      <div className="flex h-[76px] shrink-0 items-center gap-3 border-b border-gray-100 px-6">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-xl text-white">
           <i className="ri-graduation-cap-line"></i>
         </div>
@@ -93,9 +168,9 @@ function TeacherSidebar() {
       </nav>
 
       {/* Teacher Profile */}
-      <div className="border-t border-gray-100 p-4">
+      <div className="shrink-0 border-t border-gray-100 p-4">
         <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-600">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-600">
             T
           </div>
 
@@ -109,7 +184,6 @@ function TeacherSidebar() {
           <i className="ri-more-2-fill text-lg text-gray-500"></i>
         </div>
       </div>
-
     </aside>
   );
 }

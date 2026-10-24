@@ -33,6 +33,18 @@ import TeacherStudents from "../pages/teacher/TeacherStudents";
 import TeacherAssignments from "../pages/teacher/TeacherAssignments";
 import TeacherAssessments from "../pages/teacher/TeacherAssessments";
 import TeacherLiveClasses from "../pages/teacher/TeacherLiveClasses";
+import TeacherRecordings from "../pages/teacher/TeacherRecordings";
+import TeacherDiscussions from "../pages/teacher/TeacherDiscussions";
+import TeacherAnnouncements from "../pages/teacher/TeacherAnnouncements";
+import TeacherCourseAnalytics from "../pages/teacher/TeacherCourseAnalytics";
+import TeacherStudentProgress from "../pages/teacher/TeacherStudentProgress";
+import TeacherReviews from "../pages/teacher/TeacherReviews";
+import TeacherEarnings from "../pages/teacher/TeacherEarnings";
+import TeacherTransactions from "../pages/teacher/TeacherTransactions";
+import TeacherPayouts from "../pages/teacher/TeacherPayouts";
+import TeacherProfile from "../pages/teacher/TeacherProfile";
+import TeacherSettings from "../pages/teacher/TeacherSettings";
+import TeacherSupport from "../pages/teacher/TeacherSupport";
 
 
 
@@ -86,7 +98,18 @@ const Allroutes = () => {
     <Route path="assignments" element={<TeacherAssignments />} />
     <Route path="assessments" element={<TeacherAssessments />} />
     <Route path="live-classes" element={<TeacherLiveClasses />} />
-
+    <Route path="recordings" element={<TeacherRecordings />} />
+    <Route path="discussions" element={<TeacherDiscussions />} />
+    <Route path="announcements" element={<TeacherAnnouncements />}/>
+    <Route path="course-analytics" element={<TeacherCourseAnalytics />}/>
+    <Route path="student-progress" element={<TeacherStudentProgress />}/>
+    <Route path="reviews" element={<TeacherReviews />} />
+    <Route path="earnings" element={<TeacherEarnings />} />
+    <Route path="transactions" element={<TeacherTransactions />} />
+    <Route path="payouts" element={<TeacherPayouts />} />
+    <Route path="profile" element={<TeacherProfile />} />
+    <Route path="settings" element={<TeacherSettings />} />
+    <Route path="support" element={<TeacherSupport />} />
 
 </Route>
 
