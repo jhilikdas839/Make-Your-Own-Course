@@ -1,49 +1,22 @@
 
 import { useNavigate } from "react-router-dom";
+import { useCourses } from "../../hooks/useCourses";
+import AnnouncementBanner from "../../components/common/AnnouncementBanner";
+import { useCurrentUser } from "../../hooks/useAuth";
 
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import TeacherPageHeader from "../../components/common/PageHeader";
 import TeacherStatCard from "../../components/teacher/TeacherStatCard";
 import TeacherCourseCard from "../../components/teacher/TeacherCourseCard";
 
 function TeacherDashboard() {
   const navigate = useNavigate();
 
-  // Demo data: later connect with backend
-  const courses = [
-    {
-      id: 1,
-      title: "React JS Masterclass",
-      category: "Development",
-      image:
-        "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=800&q=80",
-      students: 86,
-      rating: 4.8,
-      progress: 78,
-      status: "Published",
-    },
-    {
-      id: 2,
-      title: "UI/UX Design Fundamentals",
-      category: "Design",
-      image:
-        "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=800&q=80",
-      students: 64,
-      rating: 4.9,
-      progress: 65,
-      status: "Published",
-    },
-    {
-      id: 3,
-      title: "JavaScript for Beginners",
-      category: "Development",
-      image:
-        "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?auto=format&fit=crop&w=800&q=80",
-      students: 96,
-      rating: 4.7,
-      progress: 88,
-      status: "Published",
-    },
-  ];
+  const user = useCurrentUser();
+  const [allCourses] = useCourses();
+  const courses = allCourses
+    .filter((course) => course.instructor === user.name || user.role === "admin")
+    .slice(0, 6)
+    .map((course) => ({ ...course, progress: (course.id * 17) % 40 + 55 }));
 
   const activities = [
     {
@@ -52,7 +25,7 @@ function TeacherDashboard() {
       description: "A student joined React JS Masterclass.",
       time: "10 minutes ago",
       icon: "ri-user-add-line",
-      color: "bg-blue-50 text-blue-600",
+      color: "bg-primary/10 text-primary",
     },
     {
       id: 2,
@@ -75,6 +48,8 @@ function TeacherDashboard() {
   return (
     <div className="min-h-full space-y-8 bg-[#f8f8f5] pb-6">
       {/* Welcome Header */}
+      <AnnouncementBanner audience="Teachers" />
+
       <TeacherPageHeader
         title="Welcome Back, Teacher! 👋"
         description="Here's what's happening with your courses today."
@@ -100,8 +75,8 @@ function TeacherDashboard() {
             value="12"
             change="12%"
             icon="ri-book-open-line"
-            color="text-blue-600"
-            bgColor="bg-blue-50"
+            color="text-primary"
+            bgColor="bg-primary/10"
           />
 
           <TeacherStatCard
@@ -137,7 +112,7 @@ function TeacherDashboard() {
       <section>
         <div className="mb-5 flex items-end justify-between gap-4">
           <div>
-            <p className="mb-1 text-xs font-medium uppercase tracking-wider text-blue-600">
+            <p className="mb-1 text-xs font-medium uppercase tracking-wider text-primary">
               Keep Teaching
             </p>
 
@@ -152,7 +127,7 @@ function TeacherDashboard() {
 
           <button
             onClick={() => navigate("/teacher/courses")}
-            className="shrink-0 text-sm font-medium text-blue-600 transition hover:text-blue-800"
+            className="shrink-0 text-sm font-medium text-primary transition hover:text-primary"
           >
             View All <i className="ri-arrow-right-line ml-1" />
           </button>
@@ -180,7 +155,7 @@ function TeacherDashboard() {
               </p>
             </div>
 
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-lg text-blue-600">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">
               <i className="ri-bar-chart-grouped-line" />
             </div>
           </div>
@@ -198,7 +173,7 @@ function TeacherDashboard() {
 
               <div className="h-2 overflow-hidden rounded-full bg-gray-100">
                 <div
-                  className="h-full rounded-full bg-blue-500"
+                  className="h-full rounded-full bg-primary"
                   style={{ width: "78%" }}
                 />
               </div>
@@ -243,7 +218,7 @@ function TeacherDashboard() {
 
           <button
             onClick={() => navigate("/teacher/student-progress")}
-            className="mt-6 w-full rounded-xl border border-gray-200 py-3 text-sm font-medium text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+            className="mt-6 w-full rounded-xl border border-gray-200 py-3 text-sm font-medium text-gray-700 transition hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
           >
             View Student Progress
           </button>
@@ -262,7 +237,7 @@ function TeacherDashboard() {
               </p>
             </div>
 
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-lg text-blue-600">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">
               <i className="ri-notification-3-line" />
             </div>
           </div>
@@ -298,7 +273,7 @@ function TeacherDashboard() {
 
           <button
             onClick={() => navigate("/teacher/announcements")}
-            className="mt-5 text-sm font-medium text-blue-600 transition hover:text-blue-800"
+            className="mt-5 text-sm font-medium text-primary transition hover:text-primary"
           >
             View All Activity
             <i className="ri-arrow-right-line ml-1" />

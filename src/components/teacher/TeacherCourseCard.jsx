@@ -37,7 +37,7 @@ function TeacherCourseCard({
       {/* Course Details */}
       <div className="p-5">
 
-        <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
+        <p className="text-xs font-semibold uppercase tracking-wide text-primary">
           {category}
         </p>
 
@@ -69,7 +69,7 @@ function TeacherCourseCard({
 
           <div className="h-2 overflow-hidden rounded-full bg-gray-100">
             <div
-              className="h-full rounded-full bg-blue-600 transition-all duration-500"
+              className="h-full rounded-full bg-primary transition-all duration-500"
               style={{
                 width: `${Math.min(100, Math.max(0, Number(progress) || 0))}%`,
               }}
@@ -80,7 +80,7 @@ function TeacherCourseCard({
         {/* Manage Course Button */}
         <Link
           to={`/teacher/courses/${id}`}
-          className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 py-2.5 text-sm font-semibold text-gray-700 transition hover:border-blue-600 hover:bg-blue-50 hover:text-blue-600"
+          className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 py-2.5 text-sm font-semibold text-gray-700 transition hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
         >
           Manage Course
           <i className="ri-arrow-right-line"></i>

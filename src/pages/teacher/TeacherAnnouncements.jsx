@@ -1,5 +1,6 @@
+import { useToast } from "../../components/common/toastContext";
 import { useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const initialAnnouncements = [
   {
@@ -69,7 +70,7 @@ const statusStyles = {
 };
 
 const categoryStyles = {
-  General: "bg-blue-50 text-blue-700",
+  General: "bg-primary/10 text-primary",
   "Class Update": "bg-purple-50 text-purple-700",
   Deadline: "bg-orange-50 text-orange-700",
   Resources: "bg-teal-50 text-teal-700",
@@ -86,6 +87,7 @@ function formatDate(date) {
 }
 
 function TeacherAnnouncements() {
+  const toast = useToast();
   const [announcements, setAnnouncements] = useState(
     initialAnnouncements
   );
@@ -183,7 +185,7 @@ function TeacherAnnouncements() {
     event.preventDefault();
 
     if (!form.title.trim() || !form.course.trim() || !form.message.trim()) {
-      alert("Please complete the title, course and message.");
+      toast("Please complete the title, course and message.", "error");
       return;
     }
 
@@ -301,14 +303,14 @@ function TeacherAnnouncements() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search announcements..."
-              className="w-full rounded-xl border border-gray-200 bg-[#f8f8f5] py-3 pl-11 pr-4 text-sm outline-none focus:border-blue-500 focus:bg-white"
+              className="w-full rounded-xl border border-gray-200 bg-[#f8f8f5] py-3 pl-11 pr-4 text-sm outline-none focus:border-primary/40 focus:bg-white"
             />
           </div>
 
           <select
             value={courseFilter}
             onChange={(event) => setCourseFilter(event.target.value)}
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
           >
             <option>All Courses</option>
 
@@ -320,7 +322,7 @@ function TeacherAnnouncements() {
           <select
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
           >
             <option>All Status</option>
             <option>Published</option>
@@ -373,7 +375,7 @@ function TeacherAnnouncements() {
                 className="rounded-2xl border border-gray-200 bg-white p-5 transition hover:border-gray-300 sm:p-6"
               >
                 <div className="flex flex-col gap-4 sm:flex-row">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-2xl text-blue-600">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-2xl text-primary">
                     <i className="ri-megaphone-line" />
                   </div>
 
@@ -446,7 +448,7 @@ function TeacherAnnouncements() {
                         className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-sm font-medium transition ${
                           announcement.status === "Published"
                             ? "border border-gray-200 text-gray-700 hover:bg-gray-50"
-                            : "bg-blue-600 text-white hover:bg-blue-700"
+                            : "bg-primary text-white hover:bg-primary/90"
                         }`}
                       >
                         <i
@@ -540,7 +542,7 @@ function TeacherAnnouncements() {
                   onChange={handleChange}
                   required
                   placeholder="Enter announcement title"
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                 />
               </div>
 
@@ -558,7 +560,7 @@ function TeacherAnnouncements() {
                     list="announcement-courses"
                     required
                     placeholder="Enter course name"
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
 
                   <datalist id="announcement-courses">
@@ -579,7 +581,7 @@ function TeacherAnnouncements() {
                     value={form.date}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
 
@@ -592,7 +594,7 @@ function TeacherAnnouncements() {
                     name="category"
                     value={form.category}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
                   >
                     <option>General</option>
                     <option>Class Update</option>
@@ -610,7 +612,7 @@ function TeacherAnnouncements() {
                     name="priority"
                     value={form.priority}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
                   >
                     <option>Normal</option>
                     <option>Important</option>
@@ -626,7 +628,7 @@ function TeacherAnnouncements() {
                     name="status"
                     value={form.status}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
                   >
                     <option>Draft</option>
                     <option>Published</option>
@@ -646,7 +648,7 @@ function TeacherAnnouncements() {
                   required
                   rows="5"
                   placeholder="Write your announcement here..."
-                  className="w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm leading-6 outline-none focus:border-blue-500"
+                  className="w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm leading-6 outline-none focus:border-primary/40"
                 />
               </div>
 
@@ -656,7 +658,7 @@ function TeacherAnnouncements() {
                   name="pinned"
                   checked={form.pinned}
                   onChange={handleChange}
-                  className="h-4 w-4 accent-blue-600"
+                  className="h-4 w-4 accent-[#118BE9]"
                 />
 
                 <span>
@@ -681,7 +683,7 @@ function TeacherAnnouncements() {
 
                 <button
                   type="submit"
-                  className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
+                  className="rounded-xl bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary/90"
                 >
                   {editingId !== null
                     ? "Save Changes"
@@ -698,7 +700,7 @@ function TeacherAnnouncements() {
 
 function StatCard({ title, value, icon, color }) {
   const colorClasses = {
-    blue: "bg-blue-50 text-blue-600",
+    blue: "bg-primary/10 text-primary",
     green: "bg-green-50 text-green-600",
     orange: "bg-orange-50 text-orange-600",
     purple: "bg-purple-50 text-purple-600",

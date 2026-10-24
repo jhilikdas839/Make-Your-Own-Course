@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import { useMemo, useState } from "react";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const initialAssignments = [
   {
@@ -99,8 +99,8 @@ function TeacherAssignments() {
       title: "Total Assignments",
       value: assignments.length,
       icon: "ri-file-list-3-line",
-      color: "text-blue-600",
-      bg: "bg-blue-50",
+      color: "text-primary",
+      bg: "bg-primary/10",
     },
     {
       title: "Published",
@@ -281,14 +281,14 @@ function TeacherAssignments() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search assignments..."
-                className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500 sm:w-64"
+                className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-primary/40 sm:w-64"
               />
             </div>
 
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-600 outline-none focus:border-blue-500"
+              className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-600 outline-none focus:border-primary/40"
             >
               <option value="All">All Status</option>
               <option value="Published">Published</option>
@@ -309,11 +309,11 @@ function TeacherAssignments() {
             return (
               <article
                 key={assignment.id}
-                className="rounded-2xl border border-gray-100 p-5 transition hover:border-blue-100 hover:shadow-sm sm:p-6"
+                className="rounded-2xl border border-gray-100 p-5 transition hover:border-primary/40 hover:shadow-sm sm:p-6"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex min-w-0 items-start gap-3">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
                       <i className="ri-file-text-line text-xl" />
                     </div>
 
@@ -366,7 +366,7 @@ function TeacherAssignments() {
 
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
                     <div
-                      className="h-full rounded-full bg-blue-600 transition-all"
+                      className="h-full rounded-full bg-primary transition-all"
                       style={{ width: `${submissionPercentage}%` }}
                     />
                   </div>
@@ -398,7 +398,7 @@ function TeacherAssignments() {
                     className={`flex-1 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
                       assignment.status === "Published"
                         ? "bg-amber-50 text-amber-700 hover:bg-amber-100"
-                        : "bg-blue-600 text-white hover:bg-blue-700"
+                        : "bg-primary text-white hover:bg-primary/90"
                     }`}
                   >
                     {assignment.status === "Published"
@@ -470,7 +470,7 @@ function TeacherAssignments() {
                     setForm({ ...form, title: e.target.value })
                   }
                   placeholder="e.g. Build a React Todo App"
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   required
                 />
               </div>
@@ -484,7 +484,7 @@ function TeacherAssignments() {
                   onChange={(e) =>
                     setForm({ ...form, course: e.target.value })
                   }
-                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
                 >
                   <option>React JS Masterclass</option>
                   <option>JavaScript Fundamentals</option>
@@ -502,7 +502,7 @@ function TeacherAssignments() {
                   onChange={(e) =>
                     setForm({ ...form, dueDate: e.target.value })
                   }
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   required
                 />
               </div>
@@ -518,7 +518,7 @@ function TeacherAssignments() {
                     setForm({ ...form, description: e.target.value })
                   }
                   placeholder="Explain what students need to complete..."
-                  className="w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   required
                 />
               </div>
@@ -541,7 +541,7 @@ function TeacherAssignments() {
 
                 <button
                   type="submit"
-                  className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700"
+                  className="rounded-xl bg-primary px-5 py-3 text-sm font-medium text-white hover:bg-primary/90"
                 >
                   {editingId !== null ? "Save Changes" : "Create Draft"}
                 </button>
@@ -566,7 +566,7 @@ function TeacherAssignments() {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-blue-600">
+                <p className="text-xs font-medium uppercase tracking-wide text-primary">
                   Assignment Details
                 </p>
                 <h2
@@ -622,7 +622,7 @@ function TeacherAssignments() {
 
                 <div className="mt-3 h-2 overflow-hidden rounded-full bg-gray-100">
                   <div
-                    className="h-full rounded-full bg-blue-600"
+                    className="h-full rounded-full bg-primary"
                     style={{
                       width: `${
                         selectedAssignment.totalStudents > 0
@@ -639,7 +639,7 @@ function TeacherAssignments() {
 
             <button
               onClick={() => setSelectedAssignment(null)}
-              className="mt-6 w-full rounded-xl bg-blue-600 py-3 text-sm font-medium text-white hover:bg-blue-700"
+              className="mt-6 w-full rounded-xl bg-primary py-3 text-sm font-medium text-white hover:bg-primary/90"
             >
               Close Details
             </button>

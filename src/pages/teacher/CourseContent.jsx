@@ -1,6 +1,8 @@
 
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useCourses } from "../../hooks/useCourses";
+import { getCurriculum } from "../../data/courses";
 
 function CourseContent() {
   const navigate = useNavigate();
@@ -8,8 +10,25 @@ function CourseContent() {
 
   const [activeLesson, setActiveLesson] = useState(null);
 
-  // Demo content; later load the selected course from the backend.
-  const [sections] = useState([
+  const [courses] = useCourses();
+  const course = courses.find((item) => String(item.id) === id);
+
+  // Lessons come from the shared course store; demo content is the fallback.
+  const courseSections = course
+    ? getCurriculum(course).map((section, sIndex) => ({
+        id: sIndex + 1,
+        title: section.title,
+        lessons: section.lessons.map((lesson, lIndex) => ({
+          id: `${sIndex}-${lIndex}`,
+          title: lesson.title,
+          duration: lesson.duration,
+          type: "Video",
+          videoUrl: lesson.videoUrl || "",
+        })),
+      }))
+    : null;
+
+  const [demoSections] = useState([
     {
       id: 1,
       title: "Getting Started",
@@ -51,6 +70,7 @@ function CourseContent() {
       ],
     },
   ]);
+  const sections = courseSections || demoSections;
 
   const allLessons = sections.flatMap((section) => section.lessons);
   const selectedLesson = allLessons.find(
@@ -108,7 +128,7 @@ function CourseContent() {
       <div>
         <button
           onClick={() => navigate("/teacher/courses")}
-          className="mb-4 flex items-center gap-2 text-sm text-gray-500 transition hover:text-blue-600"
+          className="mb-4 flex items-center gap-2 text-sm text-gray-500 transition hover:text-primary"
         >
           <i className="ri-arrow-left-line" />
           Back to My Courses
@@ -116,7 +136,7 @@ function CourseContent() {
 
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <p className="mb-2 text-xs font-medium uppercase tracking-wider text-blue-600">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wider text-primary">
               Course Management
             </p>
 
@@ -131,7 +151,7 @@ function CourseContent() {
 
           <button
             onClick={() => navigate("/teacher/create-course")}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary/90"
           >
             <i className="ri-add-line" />
             Add Content
@@ -142,17 +162,17 @@ function CourseContent() {
       {/* Course Summary */}
       <section className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-3xl text-blue-600">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-3xl text-primary">
             <i className="ri-book-open-line" />
           </div>
 
           <div className="min-w-0 flex-1">
-            <span className="text-xs font-medium text-blue-600">
+            <span className="text-xs font-medium text-primary">
               COURSE ID: {id || "1"}
             </span>
 
             <h2 className="mt-1 text-lg font-semibold text-gray-900">
-              React JS Masterclass
+              {course?.title || "React JS Masterclass"}
             </h2>
 
             <p className="mt-1 text-sm text-gray-500">
@@ -183,7 +203,7 @@ function CourseContent() {
         <section className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
           <div className="mb-4 flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-blue-600">
+              <p className="text-xs font-medium uppercase tracking-wider text-primary">
                 Lesson Preview
               </p>
 
@@ -259,7 +279,7 @@ function CourseContent() {
               className="overflow-hidden rounded-2xl border border-gray-200 bg-white"
             >
               <div className="flex items-center gap-3 border-b border-gray-100 px-5 py-4">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-sm font-semibold text-blue-600">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-sm font-semibold text-primary">
                   {sectionIndex + 1}
                 </div>
 
@@ -281,8 +301,8 @@ function CourseContent() {
                   <button
                     key={lesson.id}
                     onClick={() => setActiveLesson(lesson.id)}
-                    className={`flex w-full items-center gap-3 px-5 py-4 text-left transition hover:bg-blue-50/50 ${
-                      activeLesson === lesson.id ? "bg-blue-50/70" : "bg-white"
+                    className={`flex w-full items-center gap-3 px-5 py-4 text-left transition hover:bg-primary/10/50 ${
+                      activeLesson === lesson.id ? "bg-primary/10/70" : "bg-white"
                     }`}
                   >
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-600">
@@ -315,8 +335,8 @@ function CourseContent() {
         </div>
       </section>
 
-      <div className="rounded-xl border border-blue-100 bg-blue-50/70 p-4">
-        <p className="text-sm leading-6 text-blue-800">
+      <div className="rounded-xl border border-primary/40 bg-primary/10/70 p-4">
+        <p className="text-sm leading-6 text-primary">
           <i className="ri-information-line mr-2" />
           This page currently uses sample content. Connect it to your saved
           course data and backend to manage real sections, lessons, videos and

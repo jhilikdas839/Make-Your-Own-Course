@@ -1,6 +1,6 @@
 
 import { useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const initialPayouts = [
   {
@@ -54,7 +54,7 @@ const statusStyles = {
   Completed: "bg-emerald-50 text-emerald-700",
   Pending: "bg-amber-50 text-amber-700",
   Failed: "bg-red-50 text-red-600",
-  Processing: "bg-blue-50 text-blue-700",
+  Processing: "bg-primary/10 text-primary",
 };
 
 function formatCurrency(amount) {
@@ -74,6 +74,33 @@ function formatDate(date) {
     year: "numeric",
   });
 }
+
+const StatCard = ({
+  title,
+  value,
+  subtitle,
+  icon,
+  iconBg,
+  iconColor,
+}) => (
+  <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+    <div className="flex items-start justify-between gap-3">
+      <div>
+        <p className="text-sm font-medium text-gray-500">{title}</p>
+        <h3 className="mt-3 text-2xl font-semibold tracking-tight text-gray-900">
+          {value}
+        </h3>
+        <p className="mt-2 text-xs text-gray-500">{subtitle}</p>
+      </div>
+
+      <div
+        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconBg} ${iconColor}`}
+      >
+        <i className={`${icon} text-xl`} />
+      </div>
+    </div>
+  </div>
+);
 
 function TeacherPayouts() {
   const [payouts, setPayouts] = useState(initialPayouts);
@@ -227,33 +254,6 @@ function TeacherPayouts() {
     setStatusFilter("All");
   };
 
-  const StatCard = ({
-    title,
-    value,
-    subtitle,
-    icon,
-    iconBg,
-    iconColor,
-  }) => (
-    <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-sm font-medium text-gray-500">{title}</p>
-          <h3 className="mt-3 text-2xl font-semibold tracking-tight text-gray-900">
-            {value}
-          </h3>
-          <p className="mt-2 text-xs text-gray-500">{subtitle}</p>
-        </div>
-
-        <div
-          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconBg} ${iconColor}`}
-        >
-          <i className={`${icon} text-xl`} />
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="mx-auto max-w-[1600px] space-y-6">
       {/* Page Header */}
@@ -270,14 +270,14 @@ function TeacherPayouts() {
       />
 
       {/* Demo Notice */}
-      <div className="flex items-start gap-3 rounded-xl border border-blue-100 bg-blue-50 p-4">
-        <i className="ri-information-line mt-0.5 text-lg text-blue-600" />
+      <div className="flex items-start gap-3 rounded-xl border border-primary/40 bg-primary/10 p-4">
+        <i className="ri-information-line mt-0.5 text-lg text-primary" />
 
         <div>
-          <p className="text-sm font-semibold text-blue-900">
+          <p className="text-sm font-semibold text-primary">
             Payout dashboard preview
           </p>
-          <p className="mt-1 text-sm leading-6 text-blue-800">
+          <p className="mt-1 text-sm leading-6 text-primary">
             All amounts and bank details on this page are demonstration data.
             Payout requests do not initiate real bank transfers.
           </p>
@@ -314,7 +314,7 @@ function TeacherPayouts() {
 
         <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <div className="flex items-center gap-2 text-sm text-blue-100">
+            <div className="flex items-center gap-2 text-sm text-primary">
               <i className="ri-wallet-3-line text-lg" />
               Available Balance
             </div>
@@ -323,7 +323,7 @@ function TeacherPayouts() {
               {formatCurrency(availableBalance)}
             </h2>
 
-            <p className="mt-3 max-w-md text-sm leading-6 text-blue-100">
+            <p className="mt-3 max-w-md text-sm leading-6 text-primary">
               Demo balance available for a payout request. Actual payable
               earnings must be calculated and verified by the backend.
             </p>
@@ -336,7 +336,7 @@ function TeacherPayouts() {
               setSuccessMessage("");
               setShowRequestModal(true);
             }}
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-[#172554] transition hover:bg-blue-50"
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-[#172554] transition hover:bg-primary/10"
           >
             <i className="ri-arrow-right-up-line text-lg" />
             Request Payout
@@ -345,21 +345,21 @@ function TeacherPayouts() {
 
         <div className="relative z-10 mt-7 grid grid-cols-1 gap-4 border-t border-white/15 pt-5 sm:grid-cols-3">
           <div>
-            <p className="text-xs text-blue-200">Completed Payouts</p>
+            <p className="text-xs text-primary">Completed Payouts</p>
             <p className="mt-2 text-lg font-semibold">
               {formatCurrency(stats.completedAmount)}
             </p>
           </div>
 
           <div>
-            <p className="text-xs text-blue-200">Pending Payouts</p>
+            <p className="text-xs text-primary">Pending Payouts</p>
             <p className="mt-2 text-lg font-semibold">
               {formatCurrency(stats.pendingAmount)}
             </p>
           </div>
 
           <div>
-            <p className="text-xs text-blue-200">Completed Requests</p>
+            <p className="text-xs text-primary">Completed Requests</p>
             <p className="mt-2 text-lg font-semibold">
               {stats.completedCount}
             </p>
@@ -374,8 +374,8 @@ function TeacherPayouts() {
           value={formatCurrency(availableBalance)}
           subtitle="Demo available amount"
           icon="ri-wallet-3-line"
-          iconBg="bg-blue-50"
-          iconColor="text-blue-600"
+          iconBg="bg-primary/10"
+          iconColor="text-primary"
         />
 
         <StatCard
@@ -473,7 +473,7 @@ function TeacherPayouts() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search payout ID or reference..."
-              className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+              className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
             />
           </div>
 
@@ -481,7 +481,7 @@ function TeacherPayouts() {
             <select
               value={statusFilter}
               onChange={(event) => setStatusFilter(event.target.value)}
-              className="min-w-0 flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-400"
+              className="min-w-0 flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-primary/40"
             >
               <option value="All">All Statuses</option>
               <option value="Completed">Completed</option>
@@ -565,7 +565,7 @@ function TeacherPayouts() {
                     <button
                       type="button"
                       onClick={() => setSelectedPayout(payout)}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-gray-700 transition hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
                     >
                       <i className="ri-eye-line" />
                       Details
@@ -592,7 +592,7 @@ function TeacherPayouts() {
                     <button
                       type="button"
                       onClick={clearFilters}
-                      className="mt-4 text-sm font-medium text-blue-600 hover:text-blue-700"
+                      className="mt-4 text-sm font-medium text-primary hover:text-primary"
                     >
                       Clear filters
                     </button>
@@ -656,8 +656,8 @@ function TeacherPayouts() {
             </div>
 
             <div className="border-b border-gray-100 px-5 py-6 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50">
-                <i className="ri-bank-card-line text-2xl text-blue-600" />
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+                <i className="ri-bank-card-line text-2xl text-primary" />
               </div>
 
               <p className="mt-4 text-sm text-gray-500">Payout Amount</p>
@@ -761,10 +761,10 @@ function TeacherPayouts() {
             </div>
 
             <form onSubmit={handleRequestPayout} className="space-y-5 p-5">
-              <div className="rounded-xl bg-blue-50 p-4">
-                <p className="text-sm text-blue-700">Available demo balance</p>
+              <div className="rounded-xl bg-primary/10 p-4">
+                <p className="text-sm text-primary">Available demo balance</p>
 
-                <p className="mt-1 text-2xl font-semibold text-blue-900">
+                <p className="mt-1 text-2xl font-semibold text-primary">
                   {formatCurrency(availableBalance)}
                 </p>
               </div>
@@ -790,7 +790,7 @@ function TeacherPayouts() {
                   }}
                   placeholder="Enter amount"
                   required
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                 />
 
                 <p className="mt-2 text-xs text-gray-500">
@@ -848,7 +848,7 @@ function TeacherPayouts() {
 
                 <button
                   type="submit"
-                  className="rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+                  className="rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white transition hover:bg-primary/90"
                 >
                   Create Demo Request
                 </button>

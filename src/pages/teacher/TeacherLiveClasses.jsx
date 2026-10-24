@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import { useMemo, useState } from "react";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const initialClasses = [
   {
@@ -91,8 +91,8 @@ function TeacherLiveClasses() {
       title: "Total Classes",
       value: classes.length,
       icon: "ri-live-line",
-      color: "text-blue-600",
-      bg: "bg-blue-50",
+      color: "text-primary",
+      bg: "bg-primary/10",
     },
     {
       title: "Upcoming Classes",
@@ -309,14 +309,14 @@ function TeacherLiveClasses() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search classes..."
-                className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500 sm:w-64"
+                className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-primary/40 sm:w-64"
               />
             </div>
 
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-600 outline-none focus:border-blue-500"
+              className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-600 outline-none focus:border-primary/40"
             >
               <option value="All">All Classes</option>
               <option value="Scheduled">Scheduled</option>
@@ -329,11 +329,11 @@ function TeacherLiveClasses() {
           {filteredClasses.map((liveClass) => (
             <article
               key={liveClass.id}
-              className="rounded-2xl border border-gray-100 p-5 transition hover:border-blue-100 hover:shadow-sm sm:p-6"
+              className="rounded-2xl border border-gray-100 p-5 transition hover:border-primary/40 hover:shadow-sm sm:p-6"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex min-w-0 items-start gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <i className="ri-video-chat-line text-xl" />
                   </div>
 
@@ -351,7 +351,7 @@ function TeacherLiveClasses() {
                   className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
                     liveClass.status === "Completed"
                       ? "bg-emerald-50 text-emerald-700"
-                      : "bg-blue-50 text-blue-700"
+                      : "bg-primary/10 text-primary"
                   }`}
                 >
                   {liveClass.status}
@@ -483,7 +483,7 @@ function TeacherLiveClasses() {
                     setForm({ ...form, title: e.target.value })
                   }
                   placeholder="e.g. React Hooks Explained"
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                 />
               </div>
 
@@ -496,7 +496,7 @@ function TeacherLiveClasses() {
                   onChange={(e) =>
                     setForm({ ...form, course: e.target.value })
                   }
-                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
                 >
                   <option>React JS Masterclass</option>
                   <option>JavaScript Fundamentals</option>
@@ -516,7 +516,7 @@ function TeacherLiveClasses() {
                     onChange={(e) =>
                       setForm({ ...form, date: e.target.value })
                     }
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
 
@@ -531,7 +531,7 @@ function TeacherLiveClasses() {
                     onChange={(e) =>
                       setForm({ ...form, time: e.target.value })
                     }
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
 
@@ -547,7 +547,7 @@ function TeacherLiveClasses() {
                     onChange={(e) =>
                       setForm({ ...form, duration: e.target.value })
                     }
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
 
@@ -562,7 +562,7 @@ function TeacherLiveClasses() {
                       setForm({ ...form, meetingLink: e.target.value })
                     }
                     placeholder="https://meet.google.com/..."
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
               </div>
@@ -578,7 +578,7 @@ function TeacherLiveClasses() {
                     setForm({ ...form, description: e.target.value })
                   }
                   placeholder="What will students learn in this session?"
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                 />
               </div>
 
@@ -600,7 +600,7 @@ function TeacherLiveClasses() {
 
                 <button
                   type="submit"
-                  className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700"
+                  className="rounded-xl bg-primary px-5 py-3 text-sm font-medium text-white hover:bg-primary/90"
                 >
                   {editingId !== null ? "Save Changes" : "Schedule Class"}
                 </button>
@@ -625,7 +625,7 @@ function TeacherLiveClasses() {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-blue-600">
+                <p className="text-xs font-medium uppercase tracking-wide text-primary">
                   Live Session
                 </p>
                 <h2
@@ -691,7 +691,7 @@ function TeacherLiveClasses() {
                   href={selectedClass.meetingLink}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white hover:bg-blue-700"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-medium text-white hover:bg-primary/90"
                 >
                   <i className="ri-external-link-line" />
                   Open Meeting Link

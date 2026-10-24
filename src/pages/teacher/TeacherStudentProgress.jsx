@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const initialStudents = [
   {
@@ -266,7 +266,7 @@ function TeacherStudentProgress() {
   const getStatusStyle = (status) => {
     const styles = {
       Completed: "bg-emerald-50 text-emerald-700",
-      "On Track": "bg-blue-50 text-blue-700",
+      "On Track": "bg-primary/10 text-primary",
       "In Progress": "bg-amber-50 text-amber-700",
       "At Risk": "bg-red-50 text-red-600",
     };
@@ -279,7 +279,7 @@ function TeacherStudentProgress() {
     if (progress < 30) return "bg-red-400";
     if (progress < 60) return "bg-amber-400";
 
-    return "bg-blue-600";
+    return "bg-primary";
   };
 
   const statCards = [
@@ -288,7 +288,7 @@ function TeacherStudentProgress() {
       value: stats.total,
       subtitle: "Across all courses",
       icon: "ri-group-line",
-      iconBg: "bg-blue-50 text-blue-600",
+      iconBg: "bg-primary/10 text-primary",
     },
     {
       title: "Average Completion",
@@ -366,14 +366,14 @@ function TeacherStudentProgress() {
             </p>
           </div>
 
-          <span className="text-2xl font-bold text-blue-600">
+          <span className="text-2xl font-bold text-primary">
             {stats.averageProgress}%
           </span>
         </div>
 
         <div className="mt-5 h-3 overflow-hidden rounded-full bg-gray-100">
           <div
-            className="h-full rounded-full bg-blue-600 transition-all duration-500"
+            className="h-full rounded-full bg-primary transition-all duration-500"
             style={{ width: `${stats.averageProgress}%` }}
           ></div>
         </div>
@@ -418,14 +418,14 @@ function TeacherStudentProgress() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search student..."
-              className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none transition focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
             />
           </div>
 
           <select
             value={selectedCourse}
             onChange={(event) => setSelectedCourse(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-primary/40"
           >
             {courses.map((course) => (
               <option key={course} value={course}>
@@ -437,7 +437,7 @@ function TeacherStudentProgress() {
           <select
             value={selectedStatus}
             onChange={(event) => setSelectedStatus(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-primary/40"
           >
             {[
               "All Status",
@@ -455,7 +455,7 @@ function TeacherStudentProgress() {
           <select
             value={sortBy}
             onChange={(event) => setSortBy(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-primary/40"
           >
             <option value="progress-low">Lowest Progress</option>
             <option value="progress-high">Highest Progress</option>
@@ -465,7 +465,7 @@ function TeacherStudentProgress() {
           <button
             type="button"
             onClick={handleResetFilters}
-            className="text-left text-sm font-medium text-blue-600 hover:text-blue-700 sm:col-span-2 lg:col-span-4"
+            className="text-left text-sm font-medium text-primary hover:text-primary sm:col-span-2 lg:col-span-4"
           >
             <i className="ri-refresh-line mr-1"></i>
             Reset filters
@@ -515,7 +515,7 @@ function TeacherStudentProgress() {
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-600">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
                           {student.initials}
                         </div>
 
@@ -582,7 +582,7 @@ function TeacherStudentProgress() {
                       <button
                         type="button"
                         onClick={() => setSelectedStudent(student)}
-                        className="inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-blue-600 transition hover:bg-blue-50"
+                        className="inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-primary transition hover:bg-primary/10"
                       >
                         View Details
                         <i className="ri-arrow-right-line"></i>
@@ -611,7 +611,7 @@ function TeacherStudentProgress() {
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="mt-4 text-sm font-medium text-blue-600 hover:underline"
+                className="mt-4 text-sm font-medium text-primary hover:underline"
               >
                 Clear all filters
               </button>
@@ -643,7 +643,7 @@ function TeacherStudentProgress() {
           >
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-lg font-bold text-blue-600">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-lg font-bold text-primary">
                   {selectedStudent.initials}
                 </div>
 
@@ -689,7 +689,7 @@ function TeacherStudentProgress() {
                   Course Completion
                 </span>
 
-                <span className="text-xl font-bold text-blue-600">
+                <span className="text-xl font-bold text-primary">
                   {getProgress(selectedStudent)}%
                 </span>
               </div>
@@ -750,7 +750,7 @@ function TeacherStudentProgress() {
               <button
                 type="button"
                 onClick={() => handleMarkCompleted(selectedStudent.id)}
-                className="mt-6 w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                className="mt-6 w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary/90"
               >
                 <i className="ri-checkbox-circle-line mr-2"></i>
                 Demo: Mark Course Completed

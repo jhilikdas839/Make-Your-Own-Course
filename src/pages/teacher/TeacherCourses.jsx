@@ -1,84 +1,45 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import PageHeader from "../../components/common/PageHeader";
+import StatCard from "../../components/common/StatCard";
+import SearchInput from "../../components/common/SearchInput";
+import StatusBadge from "../../components/common/StatusBadge";
+import EmptyState from "../../components/common/EmptyState";
+import SafeImage from "../../components/common/SafeImage";
+import ConfirmModal from "../../components/common/ConfirmModal";
+import { useToast } from "../../components/common/toastContext";
+import { useCourses } from "../../hooks/useCourses";
+import { useCurrentUser } from "../../hooks/useAuth";
 
-import { useNavigate } from "react-router-dom";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+const statuses = ["All", "Published", "Pending", "Draft", "Rejected"];
 
 function TeacherCourses() {
   const navigate = useNavigate();
+  const toast = useToast();
+  const user = useCurrentUser();
+  const [courses, setCourses] = useCourses();
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("All");
+  const [deleteId, setDeleteId] = useState(null);
 
-  // Demo courses — later connect with backend
-  const courses = [
-    {
-      id: 1,
-      title: "React JS Masterclass",
-      category: "Development",
-      students: 86,
-      rating: 4.8,
-      lessons: 24,
-      status: "Published",
-      image:
-        "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      id: 2,
-      title: "UI/UX Design Fundamentals",
-      category: "Design",
-      students: 64,
-      rating: 4.9,
-      lessons: 18,
-      status: "Published",
-      image:
-        "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      id: 3,
-      title: "JavaScript for Beginners",
-      category: "Development",
-      students: 96,
-      rating: 4.7,
-      lessons: 30,
-      status: "Published",
-      image:
-        "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      id: 4,
-      title: "HTML & CSS Complete Guide",
-      category: "Web Design",
-      students: 42,
-      rating: 4.6,
-      lessons: 20,
-      status: "Draft",
-      image:
-        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      id: 5,
-      title: "Tailwind CSS Essentials",
-      category: "Development",
-      students: 38,
-      rating: 4.8,
-      lessons: 16,
-      status: "Published",
-      image:
-        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      id: 6,
-      title: "Figma for Beginners",
-      category: "Design",
-      students: 27,
-      rating: 4.7,
-      lessons: 14,
-      status: "Draft",
-      image:
-        "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=800&q=80",
-    },
-  ];
+  // Admins see every course; teachers see their own.
+  const mine = user.role === "admin" ? courses : courses.filter((course) => course.instructor === user.name);
+  const filtered = mine.filter(
+    (course) =>
+      (status === "All" || course.status === status) &&
+      `${course.title} ${course.category}`.toLowerCase().includes(search.toLowerCase())
+  );
+  const count = (value) => mine.filter((course) => course.status === value).length;
+
+  const remove = () => {
+    setCourses((prev) => prev.filter((course) => course.id !== deleteId));
+    toast("Course deleted.", "info");
+  };
 
   return (
-    <div className="space-y-8 pb-6">
-      {/* Page Header */}
-      <TeacherPageHeader
+    <>
+      <PageHeader
+        eyebrow="Teaching"
         title="My Courses"
         description="Manage your courses, students and course content."
         buttonText="Create Course"
@@ -86,156 +47,83 @@ function TeacherCourses() {
         onButtonClick={() => navigate("/teacher/create-course")}
       />
 
-      {/* Summary Cards */}
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-gray-200 bg-white p-5">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">Total Courses</p>
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-              <i className="ri-book-open-line text-xl" />
-            </span>
-          </div>
-          <h3 className="mt-4 text-2xl font-semibold text-gray-900">12</h3>
-          <p className="mt-1 text-xs text-gray-500">All your courses</p>
-        </div>
-
-        <div className="rounded-2xl border border-gray-200 bg-white p-5">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">Published</p>
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-50 text-green-600">
-              <i className="ri-checkbox-circle-line text-xl" />
-            </span>
-          </div>
-          <h3 className="mt-4 text-2xl font-semibold text-gray-900">8</h3>
-          <p className="mt-1 text-xs text-gray-500">Available to students</p>
-        </div>
-
-        <div className="rounded-2xl border border-gray-200 bg-white p-5">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">Drafts</p>
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
-              <i className="ri-draft-line text-xl" />
-            </span>
-          </div>
-          <h3 className="mt-4 text-2xl font-semibold text-gray-900">4</h3>
-          <p className="mt-1 text-xs text-gray-500">Courses in progress</p>
-        </div>
+      <section className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <StatCard label="Total Courses" value={mine.length} icon="ri-book-open-line" />
+        <StatCard label="Published" value={count("Published")} icon="ri-checkbox-circle-line" tone="green" />
+        <StatCard label="Waiting for review" value={count("Pending")} icon="ri-time-line" tone="yellow" />
+        <StatCard label="Total Students" value={mine.reduce((s, c) => s + c.students, 0).toLocaleString("en-IN")} icon="ri-group-line" tone="blue" />
       </section>
 
-      {/* Course List */}
-      <section>
-        <div className="mb-5">
-          <h2 className="text-lg font-semibold text-gray-900">
-            All Courses
-          </h2>
-          <p className="mt-1 text-sm text-gray-500">
-            View and manage all the courses you have created.
-          </p>
-        </div>
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <SearchInput value={search} onChange={setSearch} placeholder="Search your courses..." className="w-full sm:max-w-sm" />
+        <select value={status} onChange={(e) => setStatus(e.target.value)} className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary">
+          {statuses.map((value) => (
+            <option key={value} value={value}>{value === "All" ? "All courses" : value}</option>
+          ))}
+        </select>
+      </div>
 
-        {/* Search and Filter */}
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="relative w-full sm:max-w-sm">
-            <i className="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search your courses..."
-              className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-11 pr-4 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
-              onChange={(e) => {
-                const value = e.target.value.toLowerCase();
-                document.querySelectorAll("[data-course-card]").forEach((card) => {
-                  card.style.display = card.dataset.courseCard.includes(value)
-                    ? ""
-                    : "none";
-                });
-              }}
-            />
-          </div>
-
-          <select
-            onChange={(e) => {
-              const value = e.target.value;
-              document.querySelectorAll("[data-course-status]").forEach((card) => {
-                card.style.display =
-                  value === "All" || card.dataset.courseStatus === value
-                    ? ""
-                    : "none";
-              });
-            }}
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:border-blue-400"
-          >
-            <option value="All">All Courses</option>
-            <option value="Published">Published</option>
-            <option value="Draft">Drafts</option>
-          </select>
-        </div>
-
-        {/* Course Cards */}
+      {filtered.length === 0 ? (
+        <EmptyState
+          icon="ri-book-open-line"
+          title={mine.length ? "No courses match your search" : "You haven't created a course yet"}
+          action={
+            <Link to="/teacher/create-course" className="rounded-xl bg-[#10131d] px-5 py-2.5 text-sm font-medium text-white hover:bg-primary">
+              Create your first course
+            </Link>
+          }
+        />
+      ) : (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {courses.map((course) => (
-            <article
-              key={course.id}
-              data-course-card={course.title.toLowerCase()}
-              data-course-status={course.status}
-              className="overflow-hidden rounded-2xl border border-gray-200 bg-white transition duration-200 hover:-translate-y-1 hover:shadow-md"
-            >
-              <div className="relative h-44 overflow-hidden bg-blue-50">
-                <img
-                  src={course.image}
-                  alt={course.title}
-                  className="h-full w-full object-cover"
-                />
-
-                <span
-                  className={`absolute right-3 top-3 rounded-full px-3 py-1 text-xs font-medium ${
-                    course.status === "Published"
-                      ? "bg-green-50 text-green-700"
-                      : "bg-amber-50 text-amber-700"
-                  }`}
-                >
-                  {course.status}
+          {filtered.map((course) => (
+            <article key={course.id} className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <div className="relative h-44 overflow-hidden">
+                <SafeImage src={course.image} alt={course.title} icon={course.icon} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                <span className="absolute left-4 top-4">
+                  <StatusBadge status={course.status} />
                 </span>
               </div>
-
               <div className="p-5">
-                <span className="text-xs font-medium text-blue-600">
-                  {course.category}
-                </span>
-
-                <h3 className="mt-2 line-clamp-1 text-base font-semibold text-gray-900">
-                  {course.title}
-                </h3>
-
-                <div className="mt-4 flex items-center justify-between gap-3 text-sm text-gray-500">
-                  <span>
-                    <i className="ri-group-line mr-1.5" />
-                    {course.students} Students
-                  </span>
-
-                  <span>
-                    <i className="ri-star-fill mr-1 text-amber-400" />
-                    {course.rating}
-                  </span>
+                <p className="text-xs font-medium text-primary">{course.category}</p>
+                <h3 className="mt-1 line-clamp-2 text-lg font-semibold">{course.title}</h3>
+                <div className="mt-4 flex flex-wrap gap-4 text-xs text-gray-500">
+                  <span><i className="ri-group-line"></i> {course.students} Students</span>
+                  <span><i className="ri-star-fill text-yellow-400"></i> {course.rating || "New"}</span>
+                  <span><i className="ri-play-circle-line"></i> {course.lessons} Lessons</span>
                 </div>
-
-                <div className="mt-3 flex items-center gap-2 text-sm text-gray-500">
-                  <i className="ri-play-circle-line text-base" />
-                  {course.lessons} Lessons
+                <div className="mt-5 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/teacher/courses/${course.id}`)}
+                    className="flex-1 rounded-xl bg-[#10131d] py-2.5 text-sm font-medium text-white transition hover:bg-primary"
+                  >
+                    Manage Content
+                  </button>
+                  {course.status === "Published" && (
+                    <Link to={`/courses/${course.id}`} title="View on website" className="flex w-11 items-center justify-center rounded-xl border border-gray-200 hover:bg-gray-50">
+                      <i className="ri-external-link-line"></i>
+                    </Link>
+                  )}
+                  <button type="button" onClick={() => setDeleteId(course.id)} title="Delete course" className="flex w-11 items-center justify-center rounded-xl border border-gray-200 text-red-500 hover:bg-red-50">
+                    <i className="ri-delete-bin-line"></i>
+                  </button>
                 </div>
-
-                <button
-                  onClick={() => navigate(`/teacher/courses/${course.id}`)}
-                  className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 py-3 text-sm font-medium text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
-                >
-                  Manage Course
-                  <i className="ri-arrow-right-line" />
-                </button>
               </div>
             </article>
           ))}
         </div>
-      </section>
-    </div>
+      )}
+
+      <ConfirmModal
+        open={Boolean(deleteId)}
+        onClose={() => setDeleteId(null)}
+        onConfirm={remove}
+        title="Delete this course?"
+        message="Students will lose access and this can't be undone."
+        confirmText="Delete course"
+        danger
+      />
+    </>
   );
 }
 

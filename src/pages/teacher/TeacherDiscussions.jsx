@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const initialDiscussions = [
   {
     id: 1,
     student: "Aarav Sharma",
     initials: "AS",
-    color: "bg-blue-100 text-blue-700",
+    color: "bg-primary/15 text-primary",
     course: "React JS Masterclass",
     title: "Why do we use useEffect?",
     question:
@@ -95,7 +95,7 @@ const initialDiscussions = [
 
 const statusStyles = {
   Unanswered: "bg-amber-50 text-amber-700",
-  Answered: "bg-blue-50 text-blue-700",
+  Answered: "bg-primary/10 text-primary",
   Resolved: "bg-green-50 text-green-700",
 };
 
@@ -319,14 +319,14 @@ function TeacherDiscussions() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search questions or students..."
-              className="w-full rounded-xl border border-gray-200 bg-[#f8f8f5] py-3 pl-11 pr-4 text-sm outline-none focus:border-blue-500 focus:bg-white"
+              className="w-full rounded-xl border border-gray-200 bg-[#f8f8f5] py-3 pl-11 pr-4 text-sm outline-none focus:border-primary/40 focus:bg-white"
             />
           </div>
 
           <select
             value={courseFilter}
             onChange={(event) => setCourseFilter(event.target.value)}
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
           >
             <option>All Courses</option>
             {courses.map((course) => (
@@ -337,7 +337,7 @@ function TeacherDiscussions() {
           <select
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
           >
             <option>All Status</option>
             <option>Unanswered</option>
@@ -433,7 +433,7 @@ function TeacherDiscussions() {
                     <button
                       type="button"
                       onClick={() => openDiscussion(discussion)}
-                      className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+                      className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white transition hover:bg-primary/90"
                     >
                       <i className="ri-reply-line" />
                       {discussion.replies.length > 0
@@ -556,7 +556,7 @@ function TeacherDiscussions() {
                       >
                         <div className="flex flex-wrap items-center justify-between gap-3">
                           <div className="flex items-center gap-2">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-700">
+                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
                               <i className="ri-user-line" />
                             </div>
 
@@ -605,7 +605,7 @@ function TeacherDiscussions() {
                                 setEditingReplyText(event.target.value)
                               }
                               rows="3"
-                              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                             />
 
                             <div className="flex justify-end gap-2">
@@ -623,7 +623,7 @@ function TeacherDiscussions() {
                               <button
                                 type="button"
                                 onClick={() => saveEditedReply(reply.id)}
-                                className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                                className="rounded-lg bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90"
                               >
                                 Save Reply
                               </button>
@@ -650,7 +650,7 @@ function TeacherDiscussions() {
                   onChange={(event) => setReplyText(event.target.value)}
                   rows="4"
                   placeholder="Write a helpful answer for your student..."
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm leading-6 outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm leading-6 outline-none focus:border-primary/40"
                 />
 
                 <div className="mt-3 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
@@ -665,7 +665,7 @@ function TeacherDiscussions() {
                   <button
                     type="submit"
                     disabled={!replyText.trim()}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <i className="ri-send-plane-line" />
                     Send Reply
@@ -682,7 +682,7 @@ function TeacherDiscussions() {
 
 function StatCard({ title, value, icon, color }) {
   const colorClasses = {
-    blue: "bg-blue-50 text-blue-600",
+    blue: "bg-primary/10 text-primary",
     orange: "bg-orange-50 text-orange-600",
     purple: "bg-purple-50 text-purple-600",
     green: "bg-green-50 text-green-600",

@@ -1,6 +1,6 @@
 
 import { useEffect, useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const initialTickets = [
   {
@@ -51,7 +51,7 @@ const categories = [
 ];
 
 const statusStyles = {
-  Open: "bg-blue-50 text-blue-700",
+  Open: "bg-primary/10 text-primary",
   "In Progress": "bg-amber-50 text-amber-700",
   Resolved: "bg-emerald-50 text-emerald-700",
   Closed: "bg-gray-100 text-gray-600",
@@ -97,7 +97,7 @@ function TeacherSupport() {
         label: "Total Tickets",
         value: tickets.length,
         icon: "ri-customer-service-2-line",
-        color: "bg-blue-50 text-blue-600",
+        color: "bg-primary/10 text-primary",
       },
       {
         label: "Open",
@@ -261,7 +261,7 @@ function TeacherSupport() {
       <section className="overflow-hidden rounded-2xl bg-[#172b4d] p-6 text-white sm:p-8">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <div className="max-w-xl">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-blue-100">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-primary">
               <i className="ri-customer-service-2-line"></i>
               Teacher Support Center
             </span>
@@ -270,7 +270,7 @@ function TeacherSupport() {
               How can we help you?
             </h2>
 
-            <p className="mt-2 text-sm leading-6 text-blue-100/80">
+            <p className="mt-2 text-sm leading-6 text-primary/80">
               Having trouble with your courses, payments or live classes?
               Create a support ticket and keep track of your request here.
             </p>
@@ -280,7 +280,7 @@ function TeacherSupport() {
                 setFormError("");
                 setShowForm(true);
               }}
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-[#172b4d] transition hover:bg-blue-50"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-[#172b4d] transition hover:bg-primary/10"
             >
               <i className="ri-add-line text-lg"></i>
               Create Support Ticket
@@ -288,7 +288,7 @@ function TeacherSupport() {
           </div>
 
           <div className="hidden h-36 w-36 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 md:flex">
-            <i className="ri-customer-service-2-line text-7xl text-blue-100"></i>
+            <i className="ri-customer-service-2-line text-7xl text-primary"></i>
           </div>
         </div>
       </section>
@@ -349,14 +349,14 @@ function TeacherSupport() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search by ticket ID, subject or category..."
-              className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+              className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
             />
           </div>
 
           <select
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
-            className="rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-blue-400"
+            className="rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-primary/40"
           >
             <option value="All">All Statuses</option>
             <option value="Open">Open</option>
@@ -368,7 +368,7 @@ function TeacherSupport() {
           <select
             value={priorityFilter}
             onChange={(event) => setPriorityFilter(event.target.value)}
-            className="rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-blue-400"
+            className="rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-primary/40"
           >
             <option value="All">All Priorities</option>
             <option value="High">High</option>
@@ -495,7 +495,7 @@ function TeacherSupport() {
 
                     <button
                       onClick={() => setSelectedTicket(ticket)}
-                      className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                      className="text-sm font-medium text-primary hover:text-primary"
                     >
                       View Details
                     </button>
@@ -552,7 +552,7 @@ function TeacherSupport() {
                   onChange={updateForm}
                   placeholder="Briefly describe your issue"
                   maxLength={120}
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                 />
               </div>
 
@@ -565,7 +565,7 @@ function TeacherSupport() {
                     name="category"
                     value={form.category}
                     onChange={updateForm}
-                    className="w-full rounded-xl border border-gray-200 px-3 py-3 text-sm outline-none focus:border-blue-400"
+                    className="w-full rounded-xl border border-gray-200 px-3 py-3 text-sm outline-none focus:border-primary/40"
                   >
                     {categories.map((category) => (
                       <option key={category} value={category}>
@@ -583,7 +583,7 @@ function TeacherSupport() {
                     name="priority"
                     value={form.priority}
                     onChange={updateForm}
-                    className="w-full rounded-xl border border-gray-200 px-3 py-3 text-sm outline-none focus:border-blue-400"
+                    className="w-full rounded-xl border border-gray-200 px-3 py-3 text-sm outline-none focus:border-primary/40"
                   >
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
@@ -603,7 +603,7 @@ function TeacherSupport() {
                   rows={5}
                   maxLength={2000}
                   placeholder="Explain the issue and what you were trying to do..."
-                  className="w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                  className="w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                 />
                 <p className="mt-1 text-right text-xs text-gray-400">
                   {form.message.length}/2000 characters
@@ -627,7 +627,7 @@ function TeacherSupport() {
 
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary/90"
                 >
                   <i className="ri-send-plane-line"></i>
                   Submit Ticket
@@ -714,8 +714,8 @@ function TeacherSupport() {
                 </p>
 
                 {selectedTicket.reply ? (
-                  <div className="rounded-xl border border-blue-100 bg-blue-50/60 p-4">
-                    <div className="flex items-center gap-2 text-sm font-medium text-blue-800">
+                  <div className="rounded-xl border border-primary/40 bg-primary/10/60 p-4">
+                    <div className="flex items-center gap-2 text-sm font-medium text-primary">
                       <i className="ri-customer-service-2-line"></i>
                       Support Team
                     </div>
@@ -744,7 +744,7 @@ function TeacherSupport() {
 
                 <button
                   onClick={() => setSelectedTicket(null)}
-                  className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
+                  className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary/90"
                 >
                   Done
                 </button>

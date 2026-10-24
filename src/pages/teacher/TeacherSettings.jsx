@@ -1,6 +1,6 @@
 
-import { useEffect, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import { useState } from "react";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const defaultSettings = {
   emailNotifications: true,
@@ -25,14 +25,74 @@ const settingSections = [
   { id: "security", label: "Security", icon: "ri-lock-password-line" },
 ];
 
+// Reads saved JSON from localStorage, falling back to a default value.
+function readSaved(key, fallback) {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? { ...fallback, ...JSON.parse(saved) } : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+const Toggle = ({ checked, onChange, label }) => (
+  <button
+    type="button"
+    role="switch"
+    aria-checked={checked}
+    aria-label={label}
+    onClick={() => onChange(!checked)}
+    className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition ${
+      checked ? "bg-primary" : "bg-gray-300"
+    }`}
+  >
+    <span
+      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition ${
+        checked ? "translate-x-6" : "translate-x-1"
+      }`}
+    />
+  </button>
+);
+
+const SettingRow = ({
+  title,
+  description,
+  checked,
+  onChange,
+}) => (
+  <div className="flex items-center justify-between gap-4 border-b border-gray-100 py-5 last:border-b-0">
+    <div className="min-w-0">
+      <h4 className="text-sm font-medium text-gray-800">{title}</h4>
+      <p className="mt-1 text-sm leading-5 text-gray-500">{description}</p>
+    </div>
+
+    <Toggle checked={checked} onChange={onChange} label={title} />
+  </div>
+);
+
+const SectionTitle = ({ icon, title, description }) => (
+  <div className="mb-6 flex items-start gap-3">
+    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+      <i className={`${icon} text-xl`} />
+    </div>
+
+    <div>
+      <h2 className="font-semibold text-gray-900">{title}</h2>
+      <p className="mt-1 text-sm leading-5 text-gray-500">{description}</p>
+    </div>
+  </div>
+);
+
 function TeacherSettings() {
   const [activeTab, setActiveTab] = useState("account");
-  const [settings, setSettings] = useState(defaultSettings);
-  const [account, setAccount] = useState({
-    fullName: "Alex Morgan",
-    email: "alex.morgan@example.com",
-    phone: "+91 98765 43210",
-  });
+  const [settings, setSettings] = useState(() => readSaved("teacherSettings", defaultSettings));
+  const [account, setAccount] = useState(() =>
+    readSaved("teacherAccountSettings", {
+      fullName: "John Doe",
+      email: "teacher@myoc.dev",
+      phone: "+91 98765 43210",
+    })
+  );
 
   const [passwords, setPasswords] = useState({
     current: "",
@@ -42,29 +102,6 @@ function TeacherSettings() {
 
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    try {
-      const savedSettings = localStorage.getItem("teacherSettings");
-      const savedAccount = localStorage.getItem("teacherAccountSettings");
-
-      if (savedSettings) {
-        setSettings({
-          ...defaultSettings,
-          ...JSON.parse(savedSettings),
-        });
-      }
-
-      if (savedAccount) {
-        setAccount((previous) => ({
-          ...previous,
-          ...JSON.parse(savedAccount),
-        }));
-      }
-    } catch {
-      setErrorMessage("Unable to load saved settings.");
-    }
-  }, []);
 
   const updateSetting = (key, value) => {
     setSettings((previous) => ({
@@ -122,54 +159,6 @@ function TeacherSettings() {
       confirmPassword: "",
     });
   };
-
-  const Toggle = ({ checked, onChange, label }) => (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      aria-label={label}
-      onClick={() => onChange(!checked)}
-      className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition ${
-        checked ? "bg-blue-600" : "bg-gray-300"
-      }`}
-    >
-      <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition ${
-          checked ? "translate-x-6" : "translate-x-1"
-        }`}
-      />
-    </button>
-  );
-
-  const SettingRow = ({
-    title,
-    description,
-    checked,
-    onChange,
-  }) => (
-    <div className="flex items-center justify-between gap-4 border-b border-gray-100 py-5 last:border-b-0">
-      <div className="min-w-0">
-        <h4 className="text-sm font-medium text-gray-800">{title}</h4>
-        <p className="mt-1 text-sm leading-5 text-gray-500">{description}</p>
-      </div>
-
-      <Toggle checked={checked} onChange={onChange} label={title} />
-    </div>
-  );
-
-  const SectionTitle = ({ icon, title, description }) => (
-    <div className="mb-6 flex items-start gap-3">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-        <i className={`${icon} text-xl`} />
-      </div>
-
-      <div>
-        <h2 className="font-semibold text-gray-900">{title}</h2>
-        <p className="mt-1 text-sm leading-5 text-gray-500">{description}</p>
-      </div>
-    </div>
-  );
 
   return (
     <div className="mx-auto max-w-[1400px] space-y-6">
@@ -246,7 +235,7 @@ function TeacherSettings() {
                 }}
                 className={`flex shrink-0 items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-medium transition lg:w-full ${
                   activeTab === section.id
-                    ? "bg-blue-50 text-blue-700"
+                    ? "bg-primary/10 text-primary"
                     : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                 }`}
               >
@@ -275,7 +264,7 @@ function TeacherSettings() {
 
             <a
               href="/teacher/support"
-              className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700"
+              className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary"
             >
               Contact Support
               <i className="ri-arrow-right-line" />
@@ -310,7 +299,7 @@ function TeacherSettings() {
                     onChange={(event) =>
                       updateAccount("fullName", event.target.value)
                     }
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                   />
                 </div>
 
@@ -329,7 +318,7 @@ function TeacherSettings() {
                     onChange={(event) =>
                       updateAccount("email", event.target.value)
                     }
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                   />
 
                   <p className="mt-2 text-xs text-gray-400">
@@ -352,15 +341,15 @@ function TeacherSettings() {
                     onChange={(event) =>
                       updateAccount("phone", event.target.value)
                     }
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                   />
                 </div>
 
-                <div className="rounded-xl border border-blue-100 bg-blue-50 p-4">
+                <div className="rounded-xl border border-primary/40 bg-primary/10 p-4">
                   <div className="flex items-start gap-3">
-                    <i className="ri-information-line mt-0.5 text-lg text-blue-600" />
+                    <i className="ri-information-line mt-0.5 text-lg text-primary" />
 
-                    <p className="text-sm leading-6 text-blue-800">
+                    <p className="text-sm leading-6 text-primary">
                       These details are saved in browser storage for this
                       demo. Account verification and email changes require
                       backend integration.
@@ -504,7 +493,7 @@ function TeacherSettings() {
                     onChange={(event) =>
                       updateSetting("language", event.target.value)
                     }
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                   >
                     <option value="English">English</option>
                     <option value="Hindi">Hindi</option>
@@ -531,7 +520,7 @@ function TeacherSettings() {
                     onChange={(event) =>
                       updateSetting("timezone", event.target.value)
                     }
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                   >
                     <option value="Asia/Kolkata">
                       India Standard Time (IST)
@@ -607,7 +596,7 @@ function TeacherSettings() {
                         }))
                       }
                       required
-                      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                       placeholder="Enter current password"
                     />
                   </div>
@@ -633,7 +622,7 @@ function TeacherSettings() {
                       }
                       required
                       minLength={8}
-                      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                       placeholder="At least 8 characters"
                     />
                   </div>
@@ -659,7 +648,7 @@ function TeacherSettings() {
                       }
                       required
                       minLength={8}
-                      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                       placeholder="Confirm your new password"
                     />
                   </div>
@@ -686,7 +675,7 @@ function TeacherSettings() {
                       passwords.newPassword.length < 8 ||
                       passwords.newPassword !== passwords.confirmPassword
                     }
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <i className="ri-lock-password-line text-lg" />
                     Update Password
@@ -726,7 +715,7 @@ function TeacherSettings() {
               <button
                 type="button"
                 onClick={saveSettings}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary/90"
               >
                 <i className="ri-save-line text-lg" />
                 Save Changes

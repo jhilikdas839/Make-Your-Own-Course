@@ -12,7 +12,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const monthlyEarnings = [
   { month: "May", revenue: 18500 },
@@ -225,7 +225,7 @@ function TeacherEarnings() {
       value: formatCurrency(totalEarnings),
       subtitle: "Across listed courses",
       icon: "ri-wallet-3-line",
-      iconStyle: "bg-blue-50 text-blue-600",
+      iconStyle: "bg-primary/10 text-primary",
     },
     {
       title: "This Month",
@@ -315,7 +315,7 @@ function TeacherEarnings() {
             <select
               value={selectedPeriod}
               onChange={(event) => setSelectedPeriod(event.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500"
+              className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-primary/40"
             >
               <option value="3 months">Last 3 Months</option>
               <option value="6 months">Last 6 Months</option>
@@ -614,14 +614,14 @@ function TeacherEarnings() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search student, course or transaction..."
-              className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none transition focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
             />
           </div>
 
           <select
             value={transactionFilter}
             onChange={(event) => setTransactionFilter(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-primary/40"
           >
             <option value="All">All Transactions</option>
             <option value="Completed">Completed</option>
@@ -706,7 +706,7 @@ function TeacherEarnings() {
                       <button
                         type="button"
                         onClick={() => handleMarkCompleted(transaction.id)}
-                        className="whitespace-nowrap rounded-lg px-3 py-2 text-xs font-medium text-blue-600 transition hover:bg-blue-50"
+                        className="whitespace-nowrap rounded-lg px-3 py-2 text-xs font-medium text-primary transition hover:bg-primary/10"
                       >
                         Demo: Mark Complete
                       </button>
@@ -742,8 +742,8 @@ function TeacherEarnings() {
       </section>
 
       {/* Informational Notice */}
-      <div className="flex items-start gap-3 rounded-2xl border border-blue-100 bg-blue-50/60 p-4">
-        <i className="ri-information-line mt-0.5 text-xl text-blue-600"></i>
+      <div className="flex items-start gap-3 rounded-2xl border border-primary/40 bg-primary/10/60 p-4">
+        <i className="ri-information-line mt-0.5 text-xl text-primary"></i>
 
         <div>
           <p className="text-sm font-semibold text-gray-800">

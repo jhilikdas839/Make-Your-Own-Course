@@ -1,9 +1,18 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCourses } from "../../hooks/useCourses";
+import { useCurrentUser } from "../../hooks/useAuth";
+import { usePlatformSettings } from "../../hooks/usePlatformData";
+import { useToast } from "../../components/common/toastContext";
+import { categories } from "../../data/courses";
 
 function CreateCourse() {
   const navigate = useNavigate();
+  const toast = useToast();
+  const user = useCurrentUser();
+  const [, setCourses] = useCourses();
+  const [platform] = usePlatformSettings();
 
   const [course, setCourse] = useState({
     title: "",
@@ -14,7 +23,7 @@ function CreateCourse() {
     thumbnail: "",
   });
 
-  const [sections, setSections] = useState([
+  const [sections, setSections] = useState(() => [
     {
       id: Date.now(),
       title: "Introduction",
@@ -34,7 +43,7 @@ function CreateCourse() {
   const [message, setMessage] = useState("");
 
   const inputClass =
-    "mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
+    "mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-primary/40 focus:ring-2 focus:ring-primary/10";
 
   const handleCourseChange = (e) => {
     const { name, value } = e.target;
@@ -142,22 +151,32 @@ function CreateCourse() {
       return;
     }
 
-    // This demo stores course details and text/URL metadata.
-    // Video and PDF File objects are not persistently stored in localStorage.
-    const savedCourses = JSON.parse(
-      localStorage.getItem("teacherCourses") || "[]"
-    );
+    const lessonCount = sections.reduce((sum, section) => sum + section.lessons.length, 0);
+    const status = platform.autoApproveCourses ? "Published" : "Pending";
 
+    // Saved in the shared course store: the admin reviews it, then it shows on the public site.
+    // Video/PDF files are not stored in the browser; they need a backend upload later.
     const newCourse = {
-      ...course,
       id: Date.now(),
-      status: "Draft",
-      createdAt: new Date().toISOString(),
+      title: course.title.trim(),
+      category: course.category,
+      level: course.level,
+      price: Number(course.price) || 0,
+      description: course.description,
+      image: course.thumbnail,
+      instructor: user.name,
+      icon: "ri-book-open-line",
+      rating: 0,
+      students: 0,
+      lessons: lessonCount,
+      hours: Math.max(1, Math.round(lessonCount / 2)),
+      outcomes: [],
+      featured: false,
+      status,
+      createdAt: new Date().toISOString().slice(0, 10),
       sections: sections.map((section) => ({
-        id: section.id,
         title: section.title,
         lessons: section.lessons.map((lesson) => ({
-          id: lesson.id,
           title: lesson.title,
           description: lesson.description,
           videoUrl: lesson.videoUrl,
@@ -167,15 +186,11 @@ function CreateCourse() {
       })),
     };
 
-    localStorage.setItem(
-      "teacherCourses",
-      JSON.stringify([...savedCourses, newCourse])
-    );
-
-    setMessage(
-      "Course draft saved! Video/PDF files still need backend upload."
-    );
+    setCourses((prev) => [newCourse, ...prev]);
+    toast(status === "Published" ? "Course published!" : "Course sent to admin for review.");
+    navigate("/teacher/courses");
   };
+
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 pb-8">
@@ -184,13 +199,13 @@ function CreateCourse() {
         <button
           type="button"
           onClick={() => navigate("/teacher/courses")}
-          className="mb-4 flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600"
+          className="mb-4 flex items-center gap-2 text-sm text-gray-500 hover:text-primary"
         >
           <i className="ri-arrow-left-line" />
           Back to My Courses
         </button>
 
-        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-blue-600">
+        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-primary">
           Course Management
         </p>
 
@@ -206,7 +221,7 @@ function CreateCourse() {
       {message && (
         <div
           role="status"
-          className="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-700"
+          className="rounded-xl border border-primary/40 bg-primary/10 px-4 py-3 text-sm text-primary"
         >
           {message}
         </div>
@@ -278,12 +293,9 @@ function CreateCourse() {
                   required
                 >
                   <option value="">Select category</option>
-                  <option>Development</option>
-                  <option>Design</option>
-                  <option>Business</option>
-                  <option>Marketing</option>
-                  <option>Data Science</option>
-                  <option>Other</option>
+                  {categories.map((item) => (
+                    <option key={item.name}>{item.name}</option>
+                  ))}
                 </select>
               </div>
 
@@ -304,7 +316,7 @@ function CreateCourse() {
                   <option>Beginner</option>
                   <option>Intermediate</option>
                   <option>Advanced</option>
-                  <option>All Levels</option>
+                  
                 </select>
               </div>
 
@@ -373,7 +385,7 @@ function CreateCourse() {
             <button
               type="button"
               onClick={addSection}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 px-4 py-2.5 text-sm font-medium text-blue-600 transition hover:bg-blue-50"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-primary/40 px-4 py-2.5 text-sm font-medium text-primary transition hover:bg-primary/10"
             >
               <i className="ri-add-line" />
               Add Section
@@ -387,7 +399,7 @@ function CreateCourse() {
                 className="rounded-xl border border-gray-200 p-4 sm:p-5"
               >
                 <div className="mb-5 flex items-start gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-sm font-semibold text-blue-600">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-sm font-semibold text-primary">
                     {sectionIndex + 1}
                   </div>
 
@@ -502,7 +514,7 @@ function CreateCourse() {
                             htmlFor={`video-url-${lesson.id}`}
                             className="text-sm font-medium text-gray-700"
                           >
-                            <i className="ri-link mr-1 text-blue-600" />
+                            <i className="ri-link mr-1 text-primary" />
                             Video URL
                           </label>
                           <input
@@ -528,15 +540,15 @@ function CreateCourse() {
                             htmlFor={`video-file-${lesson.id}`}
                             className="text-sm font-medium text-gray-700"
                           >
-                            <i className="ri-video-line mr-1 text-blue-600" />
+                            <i className="ri-video-line mr-1 text-primary" />
                             Upload Video
                           </label>
 
                           <label
                             htmlFor={`video-file-${lesson.id}`}
-                            className="mt-2 flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white px-4 py-6 text-center transition hover:border-blue-400 hover:bg-blue-50/40"
+                            className="mt-2 flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white px-4 py-6 text-center transition hover:border-primary/40 hover:bg-primary/10/40"
                           >
-                            <i className="ri-upload-cloud-2-line text-2xl text-blue-600" />
+                            <i className="ri-upload-cloud-2-line text-2xl text-primary" />
                             <span className="mt-2 text-sm font-medium text-gray-700">
                               {lesson.videoFile
                                 ? lesson.videoFile.name
@@ -586,13 +598,13 @@ function CreateCourse() {
                             htmlFor={`notes-${lesson.id}`}
                             className="text-sm font-medium text-gray-700"
                           >
-                            <i className="ri-file-pdf-2-line mr-1 text-blue-600" />
+                            <i className="ri-file-pdf-2-line mr-1 text-primary" />
                             Lesson Notes / PDF
                           </label>
 
                           <label
                             htmlFor={`notes-${lesson.id}`}
-                            className="mt-2 flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 transition hover:border-blue-300"
+                            className="mt-2 flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 transition hover:border-primary/40"
                           >
                             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-500">
                               <i className="ri-file-pdf-2-line text-xl" />
@@ -652,7 +664,7 @@ function CreateCourse() {
                 <button
                   type="button"
                   onClick={() => addLesson(section.id)}
-                  className="mt-4 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-blue-600 transition hover:bg-blue-50"
+                  className="mt-4 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-primary transition hover:bg-primary/10"
                 >
                   <i className="ri-add-circle-line text-lg" />
                   Add Lesson
@@ -674,7 +686,7 @@ function CreateCourse() {
 
           <button
             type="submit"
-            className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
+            className="rounded-xl bg-primary px-6 py-3 text-sm font-medium text-white transition hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-primary/10"
           >
             <i className="ri-save-line mr-2" />
             Save as Draft

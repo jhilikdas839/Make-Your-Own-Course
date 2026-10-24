@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const initialTransactions = [
   {
@@ -116,6 +116,33 @@ function formatDate(date) {
     year: "numeric",
   });
 }
+
+const StatCard = ({
+  title,
+  value,
+  subtitle,
+  icon,
+  iconBg,
+  iconColor,
+}) => (
+  <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+    <div className="flex items-start justify-between gap-3">
+      <div>
+        <p className="text-sm font-medium text-gray-500">{title}</p>
+        <h3 className="mt-3 text-2xl font-semibold tracking-tight text-gray-900">
+          {value}
+        </h3>
+        <p className="mt-2 text-xs text-gray-500">{subtitle}</p>
+      </div>
+
+      <div
+        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconBg} ${iconColor}`}
+      >
+        <i className={`${icon} text-xl`} />
+      </div>
+    </div>
+  </div>
+);
 
 function TeacherTransactions() {
   const [transactions, setTransactions] = useState(initialTransactions);
@@ -260,33 +287,6 @@ function TeacherTransactions() {
     );
   };
 
-  const StatCard = ({
-    title,
-    value,
-    subtitle,
-    icon,
-    iconBg,
-    iconColor,
-  }) => (
-    <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-sm font-medium text-gray-500">{title}</p>
-          <h3 className="mt-3 text-2xl font-semibold tracking-tight text-gray-900">
-            {value}
-          </h3>
-          <p className="mt-2 text-xs text-gray-500">{subtitle}</p>
-        </div>
-
-        <div
-          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconBg} ${iconColor}`}
-        >
-          <i className={`${icon} text-xl`} />
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="mx-auto max-w-[1600px] space-y-6">
       {/* Page Header */}
@@ -299,15 +299,15 @@ function TeacherTransactions() {
       />
 
       {/* Demo Notice */}
-      <div className="flex items-start gap-3 rounded-xl border border-blue-100 bg-blue-50 p-4">
-        <i className="ri-information-line mt-0.5 text-lg text-blue-600" />
+      <div className="flex items-start gap-3 rounded-xl border border-primary/40 bg-primary/10 p-4">
+        <i className="ri-information-line mt-0.5 text-lg text-primary" />
 
         <div>
-          <p className="text-sm font-semibold text-blue-900">
+          <p className="text-sm font-semibold text-primary">
             Demo transaction records
           </p>
 
-          <p className="mt-1 text-sm leading-6 text-blue-800">
+          <p className="mt-1 text-sm leading-6 text-primary">
             These are sample transactions for the dashboard preview.
             Actual payments, refunds and payment verification require
             a connected payment gateway and backend.
@@ -322,8 +322,8 @@ function TeacherTransactions() {
           value={stats.total}
           subtitle="All recorded transactions"
           icon="ri-exchange-funds-line"
-          iconBg="bg-blue-50"
-          iconColor="text-blue-600"
+          iconBg="bg-primary/10"
+          iconColor="text-primary"
         />
 
         <StatCard
@@ -389,14 +389,14 @@ function TeacherTransactions() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search ID, student, course..."
-              className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+              className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
             />
           </div>
 
           <select
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-400"
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-primary/40"
           >
             <option value="All">All Statuses</option>
             <option value="Completed">Completed</option>
@@ -408,7 +408,7 @@ function TeacherTransactions() {
           <select
             value={methodFilter}
             onChange={(event) => setMethodFilter(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-400"
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-primary/40"
           >
             <option value="All">All Payment Methods</option>
             <option value="UPI">UPI</option>
@@ -422,7 +422,7 @@ function TeacherTransactions() {
               value={dateFilter}
               onChange={(event) => setDateFilter(event.target.value)}
               aria-label="Filter by transaction date"
-              className="min-w-0 flex-1 rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-400"
+              className="min-w-0 flex-1 rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-primary/40"
             />
 
             <button
@@ -522,7 +522,7 @@ function TeacherTransactions() {
                     <button
                       type="button"
                       onClick={() => setSelectedTransaction(transaction)}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-gray-700 transition hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
                     >
                       <i className="ri-eye-line" />
                       Details
@@ -549,7 +549,7 @@ function TeacherTransactions() {
                     <button
                       type="button"
                       onClick={clearFilters}
-                      className="mt-4 text-sm font-medium text-blue-600 hover:text-blue-700"
+                      className="mt-4 text-sm font-medium text-primary hover:text-primary"
                     >
                       Clear all filters
                     </button>
@@ -616,8 +616,8 @@ function TeacherTransactions() {
 
             {/* Amount and Status */}
             <div className="border-b border-gray-100 px-5 py-6 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50">
-                <i className="ri-secure-payment-line text-2xl text-blue-600" />
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+                <i className="ri-secure-payment-line text-2xl text-primary" />
               </div>
 
               <p className="mt-4 text-sm text-gray-500">Transaction Amount</p>

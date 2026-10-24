@@ -1,16 +1,77 @@
-# React + Vite
+# Make Your Own Course (MYOC)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An online learning platform frontend built with **React 19**, **Vite**, **Tailwind CSS v4** and **React Router 7**.
 
-Currently, two official plugins are available:
+It has four parts:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Part | URL | Who can open it |
+| --- | --- | --- |
+| Public website | `/`, `/courses`, `/courses/:id`, `/about`, `/contact` ... | Everyone |
+| Student panel | `/student/...` | Students (and super admin) |
+| Teacher panel | `/teacher/...` | Teachers (and super admin) |
+| Super admin panel | `/admin/...` | Admin only |
 
-## React Compiler
+## Getting started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+cp .env.example .env   # then edit the values
+npm run dev
+```
 
-## Expanding the ESLint configuration
+### Environment variables
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Name | What it does |
+| --- | --- |
+| `VITE_API_URL` | Backend base URL (login and signup use it). |
+| `VITE_ENABLE_DEMO_LOGIN` | `true` shows "Demo access" buttons on the login page so you can open every panel without the backend. Keep it off in production. |
+
+`.env` is git-ignored. Only `.env.example` is committed.
+
+## Folder structure
+
+```
+src/
+├── components/
+│   ├── common/    # Shared UI: PanelLayout (sidebar + topbar), Modal, Button, Toast, StatCard...
+│   ├── public/    # Website parts: Navbar, Footer, CourseCard, Home sections
+│   ├── student/   # StudentLayout + student-only pieces
+│   ├── teacher/   # TeacherLayout + teacher-only pieces
+│   └── admin/     # AdminLayout, DataTable, IconButton
+├── pages/
+│   ├── public/    # Home, Courses, CourseDetails, Login, Signup...
+│   ├── student/   # Dashboard, MyCourses, CoursePlayer, Assessments...
+│   ├── teacher/   # TeacherDashboard, CreateCourse, Earnings...
+│   └── admin/     # AdminDashboard, Users, Courses, Payments...
+├── data/          # Demo data (courses, users, payments...) and storage keys
+├── hooks/         # useAuth, useLocalStorage, useCourses, usePlatformData
+├── utils/         # Auth helpers, formatting, file downloads
+└── Routes/        # All routes (lazy loaded) with role protection
+```
+
+All three panels use the same `PanelLayout`, so they look and behave the same.
+Each panel only defines its menu in its `*Layout.jsx` file.
+
+## How data works right now
+
+Only **login** and **signup** call the backend. Everything else uses demo data saved in the
+browser (`localStorage`) through small hooks in `src/hooks/`, so the whole app is clickable
+while the backend is being built:
+
+- A teacher creates a course -> it is **Pending** -> the admin approves it -> it appears on the website.
+- A student enrolls -> the course shows in **My Courses** -> the payment shows in **Admin > Payments**.
+- Contact form messages arrive in **Admin > Messages**; admin announcements show on dashboards.
+
+To connect the backend later, replace the hook for that data (for example `useCourses`)
+with API calls. The pages do not need to change.
+
+Admin > Platform Settings has a **Reset demo data** button.
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the dev server |
+| `npm run build` | Production build |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | Run ESLint |

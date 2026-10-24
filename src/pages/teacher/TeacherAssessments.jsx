@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import { useToast } from "../../components/common/toastContext";
+import { useMemo, useState } from "react";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const initialAssessments = [
   {
@@ -95,6 +96,7 @@ const emptyQuestion = {
 };
 
 function TeacherAssessments() {
+  const toast = useToast();
   const [assessments, setAssessments] = useState(initialAssessments);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -140,8 +142,8 @@ function TeacherAssessments() {
       title: "Total Assessments",
       value: assessments.length,
       icon: "ri-file-list-3-line",
-      color: "text-blue-600",
-      bg: "bg-blue-50",
+      color: "text-primary",
+      bg: "bg-primary/10",
     },
     {
       title: "Published Tests",
@@ -252,7 +254,7 @@ function TeacherAssessments() {
         if (item.id !== id) return item;
 
         if (item.status === "Draft" && item.quizQuestions.length === 0) {
-          window.alert("Add at least one question before publishing.");
+          toast("Add at least one question before publishing.", "error");
           return item;
         }
 
@@ -411,14 +413,14 @@ function TeacherAssessments() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search assessments..."
-                className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500 sm:w-64"
+                className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-primary/40 sm:w-64"
               />
             </div>
 
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-600 outline-none focus:border-blue-500"
+              className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-600 outline-none focus:border-primary/40"
             >
               <option value="All">All Status</option>
               <option value="Published">Published</option>
@@ -431,7 +433,7 @@ function TeacherAssessments() {
           {filteredAssessments.map((assessment) => (
             <article
               key={assessment.id}
-              className="rounded-2xl border border-gray-100 p-5 transition hover:border-blue-100 hover:shadow-sm sm:p-6"
+              className="rounded-2xl border border-gray-100 p-5 transition hover:border-primary/40 hover:shadow-sm sm:p-6"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex min-w-0 items-start gap-3">
@@ -525,7 +527,7 @@ function TeacherAssessments() {
                   className={`rounded-xl px-3 py-2.5 text-sm font-medium ${
                     assessment.status === "Published"
                       ? "bg-amber-50 text-amber-700 hover:bg-amber-100"
-                      : "bg-blue-600 text-white hover:bg-blue-700"
+                      : "bg-primary text-white hover:bg-primary/90"
                   }`}
                 >
                   {assessment.status === "Published" ? "Unpublish" : "Publish"}
@@ -591,7 +593,7 @@ function TeacherAssessments() {
                   }
                   placeholder="Enter assessment title"
                   required
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                 />
               </div>
 
@@ -604,7 +606,7 @@ function TeacherAssessments() {
                   onChange={(e) =>
                     setForm({ ...form, course: e.target.value })
                   }
-                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
                 >
                   <option>React JS Masterclass</option>
                   <option>JavaScript Fundamentals</option>
@@ -625,7 +627,7 @@ function TeacherAssessments() {
                       setForm({ ...form, duration: e.target.value })
                     }
                     required
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
 
@@ -641,7 +643,7 @@ function TeacherAssessments() {
                       setForm({ ...form, totalMarks: e.target.value })
                     }
                     required
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
 
@@ -657,7 +659,7 @@ function TeacherAssessments() {
                       setForm({ ...form, passingMarks: e.target.value })
                     }
                     required
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
 
@@ -672,7 +674,7 @@ function TeacherAssessments() {
                       setForm({ ...form, dueDate: e.target.value })
                     }
                     required
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
               </div>
@@ -689,7 +691,7 @@ function TeacherAssessments() {
                   }
                   placeholder="Describe the assessment..."
                   required
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                 />
               </div>
 
@@ -708,7 +710,7 @@ function TeacherAssessments() {
 
                 <button
                   type="submit"
-                  className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700"
+                  className="rounded-xl bg-primary px-5 py-3 text-sm font-medium text-white hover:bg-primary/90"
                 >
                   {editingId !== null ? "Save Changes" : "Create Draft"}
                 </button>
@@ -736,7 +738,7 @@ function TeacherAssessments() {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-blue-600">
+                <p className="text-xs font-medium uppercase tracking-wide text-primary">
                   Assessment Manager
                 </p>
                 <h2
@@ -803,7 +805,7 @@ function TeacherAssessments() {
                   setMessage("");
                   setShowQuestionForm(!showQuestionForm);
                 }}
-                className="rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
+                className="rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white hover:bg-primary/90"
               >
                 <i className="ri-add-line mr-1" />
                 Add Question
@@ -813,7 +815,7 @@ function TeacherAssessments() {
             {showQuestionForm && (
               <form
                 onSubmit={addQuestion}
-                className="mt-5 space-y-4 rounded-xl border border-blue-100 bg-blue-50/40 p-4"
+                className="mt-5 space-y-4 rounded-xl border border-primary/40 bg-primary/10/40 p-4"
               >
                 <div>
                   <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -830,7 +832,7 @@ function TeacherAssessments() {
                     }
                     placeholder="Enter your question"
                     required
-                    className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
 
@@ -852,7 +854,7 @@ function TeacherAssessments() {
                       }}
                       placeholder={`Enter option ${index + 1}`}
                       required
-                      className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500"
+                      className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-primary/40"
                     />
                   </div>
                 ))}
@@ -869,7 +871,7 @@ function TeacherAssessments() {
                         answer: Number(e.target.value),
                       })
                     }
-                    className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-primary/40"
                   >
                     {questionForm.options.map((_, index) => (
                       <option key={index} value={index}>
@@ -886,7 +888,7 @@ function TeacherAssessments() {
                 <div className="flex gap-3">
                   <button
                     type="submit"
-                    className="rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
+                    className="rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white hover:bg-primary/90"
                   >
                     Save Question
                   </button>

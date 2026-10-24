@@ -1,5 +1,6 @@
+import { useToast } from "../../components/common/toastContext";
 import { useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const initialRecordings = [
   {
@@ -116,6 +117,7 @@ function formatDate(date) {
 }
 
 function TeacherRecordings() {
+  const toast = useToast();
   const [recordings, setRecordings] = useState(initialRecordings);
   const [search, setSearch] = useState("");
   const [courseFilter, setCourseFilter] = useState("All Courses");
@@ -201,20 +203,21 @@ function TeacherRecordings() {
     event.preventDefault();
 
     if (!form.title.trim() || !form.course.trim()) {
-      alert("Please enter the recording title and course.");
+      toast("Please enter the recording title and course.", "error");
       return;
     }
 
     if (!form.videoUrl.trim()) {
-      alert("Please enter a video URL.");
+      toast("Please enter a video URL.", "error");
       return;
     }
 
     const isSupportedVideo = getVideoEmbedUrl(form.videoUrl);
 
     if (!isSupportedVideo) {
-      alert(
-        "Please enter a valid YouTube, Vimeo, MP4, WebM or OGG video URL."
+      toast(
+        "Please enter a valid YouTube, Vimeo, MP4, WebM or OGG video URL.",
+        "error"
       );
       return;
     }
@@ -222,7 +225,7 @@ function TeacherRecordings() {
     const duration = Number(form.duration);
 
     if (!Number.isFinite(duration) || duration <= 0) {
-      alert("Please enter a valid duration in minutes.");
+      toast("Please enter a valid duration in minutes.", "error");
       return;
     }
 
@@ -344,14 +347,14 @@ function TeacherRecordings() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search recordings or courses..."
-              className="w-full rounded-xl border border-gray-200 bg-[#f8f8f5] py-3 pl-11 pr-4 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
+              className="w-full rounded-xl border border-gray-200 bg-[#f8f8f5] py-3 pl-11 pr-4 text-sm outline-none transition focus:border-primary/40 focus:bg-white"
             />
           </div>
 
           <select
             value={courseFilter}
             onChange={(event) => setCourseFilter(event.target.value)}
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
           >
             <option>All Courses</option>
             {courses.map((course) => (
@@ -362,7 +365,7 @@ function TeacherRecordings() {
           <select
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
           >
             <option>All Status</option>
             <option>Published</option>
@@ -387,7 +390,7 @@ function TeacherRecordings() {
 
         {filteredRecordings.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-gray-300 bg-white px-5 py-14 text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-2xl text-blue-600">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-2xl text-primary">
               <i className="ri-video-line" />
             </div>
 
@@ -401,7 +404,7 @@ function TeacherRecordings() {
 
             <button
               onClick={openCreateForm}
-              className="mt-5 rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
+              className="mt-5 rounded-xl bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary/90"
             >
               Add Recording
             </button>
@@ -413,7 +416,7 @@ function TeacherRecordings() {
                 key={recording.id}
                 className="overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg"
               >
-                <div className="relative flex h-44 items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-blue-700">
+                <div className="relative flex h-44 items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-primary">
                   <div className="absolute left-4 top-4">
                     <span
                       className={`rounded-full px-3 py-1.5 text-xs font-medium ${
@@ -430,7 +433,7 @@ function TeacherRecordings() {
                     type="button"
                     onClick={() => playRecording(recording)}
                     aria-label={`Preview ${recording.title}`}
-                    className="flex h-14 w-14 items-center justify-center rounded-full bg-white/95 text-2xl text-blue-700 shadow-lg transition hover:scale-110"
+                    className="flex h-14 w-14 items-center justify-center rounded-full bg-white/95 text-2xl text-primary shadow-lg transition hover:scale-110"
                   >
                     <i className="ri-play-fill" />
                   </button>
@@ -441,7 +444,7 @@ function TeacherRecordings() {
                 </div>
 
                 <div className="p-5">
-                  <p className="mb-2 text-xs font-medium uppercase tracking-wide text-blue-600">
+                  <p className="mb-2 text-xs font-medium uppercase tracking-wide text-primary">
                     {recording.course}
                   </p>
 
@@ -469,7 +472,7 @@ function TeacherRecordings() {
                     <button
                       type="button"
                       onClick={() => playRecording(recording)}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-600 px-3 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-sm font-medium text-white transition hover:bg-primary/90"
                     >
                       <i className="ri-play-circle-line text-base" />
                       Preview
@@ -568,7 +571,7 @@ function TeacherRecordings() {
                   onChange={handleChange}
                   required
                   placeholder="e.g. Introduction to React Hooks"
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                 />
               </div>
 
@@ -585,7 +588,7 @@ function TeacherRecordings() {
                     list="recording-courses"
                     required
                     placeholder="Enter course name"
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
 
                   <datalist id="recording-courses">
@@ -606,7 +609,7 @@ function TeacherRecordings() {
                     value={form.date}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
 
@@ -623,7 +626,7 @@ function TeacherRecordings() {
                     onChange={handleChange}
                     required
                     placeholder="e.g. 45"
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                   />
                 </div>
 
@@ -636,7 +639,7 @@ function TeacherRecordings() {
                     name="status"
                     value={form.status}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
                   >
                     <option>Draft</option>
                     <option>Published</option>
@@ -656,7 +659,7 @@ function TeacherRecordings() {
                   onChange={handleChange}
                   required
                   placeholder="https://www.youtube.com/watch?v=..."
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                 />
 
                 <p className="mt-2 text-xs leading-5 text-gray-500">
@@ -676,7 +679,7 @@ function TeacherRecordings() {
                   onChange={handleChange}
                   rows="3"
                   placeholder="What will students learn in this recording?"
-                  className="w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                  className="w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40"
                 />
               </div>
 
@@ -691,7 +694,7 @@ function TeacherRecordings() {
 
                 <button
                   type="submit"
-                  className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
+                  className="rounded-xl bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary/90"
                 >
                   {editingId !== null ? "Save Changes" : "Add Recording"}
                 </button>
@@ -773,7 +776,7 @@ function TeacherRecordings() {
 
 function StatCard({ title, value, icon, color, subtitle }) {
   const colorClasses = {
-    blue: "bg-blue-50 text-blue-600",
+    blue: "bg-primary/10 text-primary",
     green: "bg-green-50 text-green-600",
     purple: "bg-purple-50 text-purple-600",
     orange: "bg-orange-50 text-orange-600",

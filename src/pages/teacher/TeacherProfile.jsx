@@ -1,10 +1,10 @@
 
-import { useEffect, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import { useState } from "react";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const defaultProfile = {
-  fullName: "Alex Morgan",
-  email: "alex.morgan@example.com",
+  fullName: "John Doe",
+  email: "teacher@myoc.dev",
   phone: "+91 98765 43210",
   headline: "Full Stack Developer & Online Educator",
   bio: "I help students learn web development through practical projects, real-world examples, and easy-to-follow lessons. My goal is to make technical concepts simple and accessible for everyone.",
@@ -17,37 +17,64 @@ const defaultProfile = {
   languages: ["English", "Hindi"],
 };
 
+// Reads saved JSON from localStorage, falling back to a default value.
+function readSaved(key, fallback) {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? { ...fallback, ...JSON.parse(saved) } : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+const Field = ({
+  label,
+  name,
+  value,
+  placeholder,
+  type = "text",
+  required = false,
+  disabled,
+  onChange,
+}) => (
+  <div>
+    <label
+      htmlFor={name}
+      className="mb-2 block text-sm font-medium text-gray-700"
+    >
+      {label}
+      {required && <span className="ml-1 text-red-500">*</span>}
+    </label>
+
+    <input
+      id={name}
+      name={name}
+      type={type}
+      value={value}
+      placeholder={placeholder}
+      required={required}
+      disabled={disabled}
+      onChange={(event) => onChange(name, event.target.value)}
+      className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-primary/40 focus:ring-2 focus:ring-primary/10 disabled:bg-gray-50 disabled:text-gray-600"
+    />
+  </div>
+);
+
 function TeacherProfile() {
-  const [profile, setProfile] = useState(defaultProfile);
+  const [profile, setProfile] = useState(() => {
+    const saved = readSaved("teacherProfile", defaultProfile);
+    return {
+      ...saved,
+      expertise: Array.isArray(saved.expertise) ? saved.expertise : defaultProfile.expertise,
+      languages: Array.isArray(saved.languages) ? saved.languages : defaultProfile.languages,
+    };
+  });
   const [profileImage, setProfileImage] = useState("");
   const [newSkill, setNewSkill] = useState("");
   const [newLanguage, setNewLanguage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    try {
-      const savedProfile = localStorage.getItem("teacherProfile");
-
-      if (savedProfile) {
-        const parsedProfile = JSON.parse(savedProfile);
-
-        setProfile({
-          ...defaultProfile,
-          ...parsedProfile,
-          expertise: Array.isArray(parsedProfile.expertise)
-            ? parsedProfile.expertise
-            : defaultProfile.expertise,
-          languages: Array.isArray(parsedProfile.languages)
-            ? parsedProfile.languages
-            : defaultProfile.languages,
-        });
-      }
-    } catch {
-      setErrorMessage("Saved profile data could not be loaded.");
-    }
-  }, []);
 
   const updateField = (field, value) => {
     setProfile((previous) => ({
@@ -247,37 +274,6 @@ function TeacherProfile() {
 
   const completion = completedFields * 10;
 
-  const Field = ({
-    label,
-    name,
-    value,
-    placeholder,
-    type = "text",
-    required = false,
-  }) => (
-    <div>
-      <label
-        htmlFor={name}
-        className="mb-2 block text-sm font-medium text-gray-700"
-      >
-        {label}
-        {required && <span className="ml-1 text-red-500">*</span>}
-      </label>
-
-      <input
-        id={name}
-        name={name}
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        required={required}
-        disabled={!isEditing}
-        onChange={(event) => updateField(name, event.target.value)}
-        className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-50 disabled:bg-gray-50 disabled:text-gray-600"
-      />
-    </div>
-  );
-
   return (
     <div className="mx-auto max-w-[1400px] space-y-6">
       {/* Header */}
@@ -344,12 +340,12 @@ function TeacherProfile() {
 
       {/* Profile Hero */}
       <section className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
-        <div className="h-32 bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-500 sm:h-40" />
+        <div className="h-32 bg-gradient-to-r from-primary via-primary to-indigo-500 sm:h-40" />
 
         <div className="px-5 pb-6 sm:px-8">
           <div className="-mt-12 flex flex-col gap-4 sm:-mt-14 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
-              <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-4 border-white bg-blue-100 text-2xl font-semibold text-blue-700 shadow-sm sm:h-28 sm:w-28">
+              <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-4 border-white bg-primary/15 text-2xl font-semibold text-primary shadow-sm sm:h-28 sm:w-28">
                 {profileImage ? (
                   <img
                     src={profileImage}
@@ -431,14 +427,14 @@ function TeacherProfile() {
             </p>
           </div>
 
-          <span className="text-2xl font-semibold text-blue-600">
+          <span className="text-2xl font-semibold text-primary">
             {completion}%
           </span>
         </div>
 
         <div className="mt-5 h-2.5 overflow-hidden rounded-full bg-gray-100">
           <div
-            className="h-full rounded-full bg-blue-600 transition-all duration-500"
+            className="h-full rounded-full bg-primary transition-all duration-500"
             style={{ width: `${completion}%` }}
           />
         </div>
@@ -453,7 +449,7 @@ function TeacherProfile() {
         {/* Personal Information */}
         <section className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7">
           <div className="mb-6 flex items-start gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <i className="ri-user-line text-xl" />
             </div>
 
@@ -469,7 +465,7 @@ function TeacherProfile() {
           </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            <Field
+            <Field disabled={!isEditing} onChange={updateField}
               label="Full Name"
               name="fullName"
               value={profile.fullName}
@@ -477,7 +473,7 @@ function TeacherProfile() {
               required
             />
 
-            <Field
+            <Field disabled={!isEditing} onChange={updateField}
               label="Email Address"
               name="email"
               value={profile.email}
@@ -486,7 +482,7 @@ function TeacherProfile() {
               required
             />
 
-            <Field
+            <Field disabled={!isEditing} onChange={updateField}
               label="Phone Number"
               name="phone"
               value={profile.phone}
@@ -494,7 +490,7 @@ function TeacherProfile() {
               type="tel"
             />
 
-            <Field
+            <Field disabled={!isEditing} onChange={updateField}
               label="Location"
               name="location"
               value={profile.location}
@@ -522,7 +518,7 @@ function TeacherProfile() {
           </div>
 
           <div className="space-y-5">
-            <Field
+            <Field disabled={!isEditing} onChange={updateField}
               label="Professional Headline"
               name="headline"
               value={profile.headline}
@@ -545,7 +541,7 @@ function TeacherProfile() {
                 disabled={!isEditing}
                 onChange={(event) => updateField("bio", event.target.value)}
                 placeholder="Tell students about your experience and teaching style..."
-                className="w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm leading-6 text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-50 disabled:bg-gray-50 disabled:text-gray-600"
+                className="w-full resize-y rounded-xl border border-gray-200 px-4 py-3 text-sm leading-6 text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-primary/40 focus:ring-2 focus:ring-primary/10 disabled:bg-gray-50 disabled:text-gray-600"
               />
 
               <p className="mt-2 text-xs text-gray-400">
@@ -554,7 +550,7 @@ function TeacherProfile() {
             </div>
 
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-              <Field
+              <Field disabled={!isEditing} onChange={updateField}
                 label="Years of Experience"
                 name="experience"
                 value={profile.experience}
@@ -563,7 +559,7 @@ function TeacherProfile() {
                 required
               />
 
-              <Field
+              <Field disabled={!isEditing} onChange={updateField}
                 label="Highest Qualification"
                 name="education"
                 value={profile.education}
@@ -595,7 +591,7 @@ function TeacherProfile() {
             {profile.expertise.map((skill) => (
               <span
                 key={skill}
-                className="inline-flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary/10 px-3 py-2 text-sm font-medium text-primary"
               >
                 {skill}
 
@@ -604,7 +600,7 @@ function TeacherProfile() {
                     type="button"
                     onClick={() => removeSkill(skill)}
                     aria-label={`Remove ${skill}`}
-                    className="text-blue-500 transition hover:text-red-600"
+                    className="text-primary transition hover:text-red-600"
                   >
                     <i className="ri-close-line text-base" />
                   </button>
@@ -632,7 +628,7 @@ function TeacherProfile() {
                   }
                 }}
                 placeholder="Enter a skill, e.g. React.js"
-                className="min-w-0 flex-1 rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                className="min-w-0 flex-1 rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
               />
 
               <button
@@ -706,7 +702,7 @@ function TeacherProfile() {
                   }
                 }}
                 placeholder="Enter a language"
-                className="min-w-0 flex-1 rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50"
+                className="min-w-0 flex-1 rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
               />
 
               <button
@@ -740,7 +736,7 @@ function TeacherProfile() {
           </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            <Field
+            <Field disabled={!isEditing} onChange={updateField}
               label="Personal Website"
               name="website"
               value={profile.website}
@@ -748,7 +744,7 @@ function TeacherProfile() {
               type="url"
             />
 
-            <Field
+            <Field disabled={!isEditing} onChange={updateField}
               label="LinkedIn Profile"
               name="linkedin"
               value={profile.linkedin}
@@ -776,7 +772,7 @@ function TeacherProfile() {
 
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary/90"
               >
                 <i className="ri-save-line text-lg" />
                 Save Changes

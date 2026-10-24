@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import { useMemo, useState } from "react";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const studentsData = [
   {
@@ -113,8 +113,8 @@ function TeacherStudents() {
       title: "Total Students",
       value: totalStudents,
       icon: "ri-group-line",
-      color: "text-blue-600",
-      bg: "bg-blue-50",
+      color: "text-primary",
+      bg: "bg-primary/10",
     },
     {
       title: "Active Learners",
@@ -196,7 +196,7 @@ function TeacherStudents() {
                   placeholder="Search students..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-blue-500 sm:w-60"
+                  className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-primary/40 sm:w-60"
                 />
               </div>
 
@@ -204,7 +204,7 @@ function TeacherStudents() {
               <select
                 value={selectedCourse}
                 onChange={(e) => setSelectedCourse(e.target.value)}
-                className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-600 outline-none focus:border-blue-500"
+                className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-600 outline-none focus:border-primary/40"
               >
                 {courses.map((course) => (
                   <option key={course} value={course}>
@@ -217,7 +217,7 @@ function TeacherStudents() {
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-600 outline-none focus:border-blue-500"
+                className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-600 outline-none focus:border-primary/40"
               >
                 <option>All Status</option>
                 <option>Active</option>
@@ -249,7 +249,7 @@ function TeacherStudents() {
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-700">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
                         {student.avatar}
                       </div>
 
@@ -279,7 +279,7 @@ function TeacherStudents() {
 
                       <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
                         <div
-                          className="h-full rounded-full bg-blue-600"
+                          className="h-full rounded-full bg-primary"
                           style={{ width: `${student.progress}%` }}
                         />
                       </div>
@@ -295,7 +295,7 @@ function TeacherStudents() {
                       className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${
                         student.status === "Completed"
                           ? "bg-emerald-50 text-emerald-700"
-                          : "bg-blue-50 text-blue-700"
+                          : "bg-primary/10 text-primary"
                       }`}
                     >
                       {student.status}
@@ -305,7 +305,7 @@ function TeacherStudents() {
                   <td className="px-6 py-4 text-right">
                     <button
                       onClick={() => setSelectedStudent(student)}
-                      className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                      className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
                     >
                       View Details
                     </button>
@@ -336,7 +336,7 @@ function TeacherStudents() {
               className="rounded-xl border border-gray-100 p-4"
             >
               <div className="flex items-start gap-3">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-700">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
                   {student.avatar}
                 </div>
 
@@ -356,7 +356,7 @@ function TeacherStudents() {
                   className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${
                     student.status === "Completed"
                       ? "bg-emerald-50 text-emerald-700"
-                      : "bg-blue-50 text-blue-700"
+                      : "bg-primary/10 text-primary"
                   }`}
                 >
                   {student.status}
@@ -373,7 +373,7 @@ function TeacherStudents() {
 
                 <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
                   <div
-                    className="h-full rounded-full bg-blue-600"
+                    className="h-full rounded-full bg-primary"
                     style={{ width: `${student.progress}%` }}
                   />
                 </div>
@@ -430,7 +430,7 @@ function TeacherStudents() {
           >
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 font-semibold text-blue-700">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary">
                   {selectedStudent.avatar}
                 </div>
 
@@ -488,7 +488,7 @@ function TeacherStudents() {
 
                 <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
                   <div
-                    className="h-full rounded-full bg-blue-600"
+                    className="h-full rounded-full bg-primary"
                     style={{ width: `${selectedStudent.progress}%` }}
                   />
                 </div>
@@ -500,7 +500,7 @@ function TeacherStudents() {
                   className={`rounded-full px-3 py-1 text-xs font-medium ${
                     selectedStudent.status === "Completed"
                       ? "bg-emerald-50 text-emerald-700"
-                      : "bg-blue-50 text-blue-700"
+                      : "bg-primary/10 text-primary"
                   }`}
                 >
                   {selectedStudent.status}
@@ -510,7 +510,7 @@ function TeacherStudents() {
 
             <button
               onClick={() => setSelectedStudent(null)}
-              className="mt-6 w-full rounded-xl bg-blue-600 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
+              className="mt-6 w-full rounded-xl bg-primary py-3 text-sm font-medium text-white transition hover:bg-primary/90"
             >
               Close Details
             </button>

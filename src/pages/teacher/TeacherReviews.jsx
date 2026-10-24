@@ -1,6 +1,6 @@
 
 import { useMemo, useState } from "react";
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const initialReviews = [
   {
@@ -310,7 +310,7 @@ function TeacherReviews() {
       suffix: "",
       description: "Student feedback received",
       icon: "ri-chat-quote-line",
-      iconStyle: "bg-blue-50 text-blue-600",
+      iconStyle: "bg-primary/10 text-primary",
     },
     {
       title: "5-Star Reviews",
@@ -504,14 +504,14 @@ function TeacherReviews() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search reviews..."
-              className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none transition focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
             />
           </div>
 
           <select
             value={selectedCourse}
             onChange={(event) => setSelectedCourse(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-primary/40"
           >
             {courses.map((course) => (
               <option key={course} value={course}>
@@ -523,7 +523,7 @@ function TeacherReviews() {
           <select
             value={selectedRating}
             onChange={(event) => setSelectedRating(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-primary/40"
           >
             <option value="All Ratings">All Ratings</option>
 
@@ -537,7 +537,7 @@ function TeacherReviews() {
           <select
             value={replyFilter}
             onChange={(event) => setReplyFilter(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-primary/40"
           >
             <option value="All Reviews">All Reviews</option>
             <option value="Needs Reply">Needs Reply</option>
@@ -547,7 +547,7 @@ function TeacherReviews() {
           <select
             value={sortBy}
             onChange={(event) => setSortBy(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-700 outline-none focus:border-primary/40"
           >
             <option value="newest">Newest First</option>
             <option value="highest">Highest Rating</option>
@@ -558,7 +558,7 @@ function TeacherReviews() {
           <button
             type="button"
             onClick={resetFilters}
-            className="text-left text-sm font-medium text-blue-600 hover:text-blue-700 sm:col-span-2 lg:col-span-3 xl:col-span-5"
+            className="text-left text-sm font-medium text-primary hover:text-primary sm:col-span-2 lg:col-span-3 xl:col-span-5"
           >
             <i className="ri-refresh-line mr-1"></i>
             Reset filters
@@ -573,7 +573,7 @@ function TeacherReviews() {
               className="p-5 transition hover:bg-gray-50/50 sm:p-6"
             >
               <div className="flex items-start gap-3 sm:gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-600">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
                   {review.initials}
                 </div>
 
@@ -628,12 +628,12 @@ function TeacherReviews() {
 
                   {/* Existing Reply */}
                   {review.reply && (
-                    <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50/60 p-4">
+                    <div className="mt-4 rounded-xl border border-primary/40 bg-primary/10/60 p-4">
                       <div className="flex items-start gap-2">
-                        <i className="ri-reply-line mt-0.5 text-lg text-blue-600"></i>
+                        <i className="ri-reply-line mt-0.5 text-lg text-primary"></i>
 
                         <div className="min-w-0 flex-1">
-                          <p className="text-xs font-semibold text-blue-700">
+                          <p className="text-xs font-semibold text-primary">
                             Your Response
                           </p>
 
@@ -650,7 +650,7 @@ function TeacherReviews() {
                     <button
                       type="button"
                       onClick={() => toggleHelpful(review.id)}
-                      className="inline-flex items-center gap-2 rounded-lg px-2 py-2 text-xs font-medium text-gray-500 transition hover:bg-gray-100 hover:text-blue-600"
+                      className="inline-flex items-center gap-2 rounded-lg px-2 py-2 text-xs font-medium text-gray-500 transition hover:bg-gray-100 hover:text-primary"
                     >
                       <i className="ri-thumb-up-line text-base"></i>
                       Helpful ({review.helpful})
@@ -670,7 +670,7 @@ function TeacherReviews() {
                       <button
                         type="button"
                         onClick={() => openReplyModal(review)}
-                        className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-blue-700"
+                        className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-primary/90"
                       >
                         <i className="ri-reply-line text-base"></i>
                         {review.reply ? "Edit Reply" : "Reply to Review"}
@@ -699,7 +699,7 @@ function TeacherReviews() {
               <button
                 type="button"
                 onClick={resetFilters}
-                className="mt-4 text-sm font-medium text-blue-600 hover:underline"
+                className="mt-4 text-sm font-medium text-primary hover:underline"
               >
                 Clear filters
               </button>
@@ -785,7 +785,7 @@ function TeacherReviews() {
               onChange={(event) => setReplyText(event.target.value)}
               placeholder="Thank the student and respond to their feedback..."
               maxLength={1000}
-              className="mt-2 w-full resize-y rounded-xl border border-gray-200 p-4 text-sm leading-6 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="mt-2 w-full resize-y rounded-xl border border-gray-200 p-4 text-sm leading-6 outline-none transition focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
             ></textarea>
 
             <div className="mt-2 flex justify-between gap-3 text-xs text-gray-400">
@@ -806,7 +806,7 @@ function TeacherReviews() {
                 type="button"
                 onClick={saveReply}
                 disabled={!replyText.trim()}
-                className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <i className="ri-send-plane-line mr-2"></i>
                 Save Reply

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -11,7 +11,7 @@ import {
   Bar,
 } from "recharts";
 
-import TeacherPageHeader from "../../components/teacher/TeacherPageHeader";
+import TeacherPageHeader from "../../components/common/PageHeader";
 
 const enrollmentData = [
   { month: "May", students: 28 },
@@ -32,7 +32,7 @@ const initialCourses = [
     completion: 78,
     rating: 4.8,
     engagement: 86,
-    color: "bg-blue-500",
+    color: "bg-primary",
   },
   {
     id: 2,
@@ -82,7 +82,7 @@ const initialCourses = [
 
 function StatCard({ title, value, subtitle, icon, color }) {
   const colorClasses = {
-    blue: "bg-blue-50 text-blue-600",
+    blue: "bg-primary/10 text-primary",
     green: "bg-green-50 text-green-600",
     purple: "bg-purple-50 text-purple-600",
     orange: "bg-orange-50 text-orange-600",
@@ -143,7 +143,7 @@ function TeacherCourseAnalytics() {
       ).toFixed(1)
     : "0.0";
 
-  const filteredCourses = useMemo(() => {
+  const filteredCourses = (() => {
     const result = courses.filter((course) => {
       const matchesSearch = course.name
         .toLowerCase()
@@ -175,7 +175,7 @@ function TeacherCourseAnalytics() {
 
       return a.name.localeCompare(b.name);
     });
-  }, [courses, search, categoryFilter, sortBy]);
+  })();
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-7">
@@ -233,7 +233,7 @@ function TeacherCourseAnalytics() {
               </p>
             </div>
 
-            <span className="rounded-lg bg-blue-50 px-3 py-2 text-xs font-medium text-blue-700">
+            <span className="rounded-lg bg-primary/10 px-3 py-2 text-xs font-medium text-primary">
               Last 6 months
             </span>
           </div>
@@ -392,14 +392,14 @@ function TeacherCourseAnalytics() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search courses..."
-              className="w-full rounded-xl border border-gray-200 bg-[#f8f8f5] py-3 pl-11 pr-4 text-sm outline-none focus:border-blue-500 focus:bg-white"
+              className="w-full rounded-xl border border-gray-200 bg-[#f8f8f5] py-3 pl-11 pr-4 text-sm outline-none focus:border-primary/40 focus:bg-white"
             />
           </div>
 
           <select
             value={categoryFilter}
             onChange={(event) => setCategoryFilter(event.target.value)}
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
           >
             <option>All Categories</option>
             <option>Development</option>
@@ -409,7 +409,7 @@ function TeacherCourseAnalytics() {
           <select
             value={sortBy}
             onChange={(event) => setSortBy(event.target.value)}
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary/40"
           >
             <option value="students">Most Students</option>
             <option value="views">Most Views</option>
@@ -526,9 +526,9 @@ function TeacherCourseAnalytics() {
       </section>
 
       {/* Summary */}
-      <section className="rounded-2xl border border-blue-100 bg-blue-50/70 p-5 sm:p-6">
+      <section className="rounded-2xl border border-primary/40 bg-primary/10/70 p-5 sm:p-6">
         <div className="flex items-start gap-4">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-xl text-blue-600">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-xl text-primary">
             <i className="ri-lightbulb-line" />
           </div>
 
