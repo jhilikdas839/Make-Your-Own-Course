@@ -1,32 +1,17 @@
 import { STORAGE_KEYS } from "../data/keys";
 
-export const API_URL =
-  import.meta.env.VITE_API_URL || "https://makeyourowncoursbackend.onrender.com";
-
 export const ROLE_HOME = {
   student: "/student",
   teacher: "/teacher",
   admin: "/admin",
 };
 
-// Demo accounts let you open every panel without the backend.
-// They only show when VITE_ENABLE_DEMO_LOGIN=true (see .env.example).
+// One-click demo accounts shown on the login page (password: demo123).
 export const DEMO_USERS = {
   student: { name: "John Smith", email: "student@myoc.dev", role: "student" },
   teacher: { name: "John Doe", email: "teacher@myoc.dev", role: "teacher" },
   admin: { name: "Super Admin", email: "admin@myoc.dev", role: "admin" },
 };
-
-// Password for all demo accounts (only works when demo login is enabled).
-export const DEMO_PASSWORD = "demo123";
-
-export const findDemoUser = (email, password) =>
-  password === DEMO_PASSWORD
-    ? Object.values(DEMO_USERS).find((user) => user.email === email.trim().toLowerCase())
-    : undefined;
-
-export const isDemoLoginEnabled =
-  import.meta.env.VITE_ENABLE_DEMO_LOGIN === "true";
 
 function storageFor(remember) {
   return remember ? localStorage : sessionStorage;

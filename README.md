@@ -19,24 +19,24 @@ cp .env.example .env   # then edit the values
 npm run dev
 ```
 
-### Environment variables
+### Login and signup (fake, frontend-only)
 
-| Name | What it does |
-| --- | --- |
-| `VITE_API_URL` | Backend base URL (login and signup use it). |
-| `VITE_ENABLE_DEMO_LOGIN` | `true` shows "Demo access" buttons on the login page so you can open every panel without the backend. Keep it off in production. |
-
-`.env` is git-ignored. Only `.env.example` is committed.
-
-### Demo accounts
-
-When `VITE_ENABLE_DEMO_LOGIN=true`, these work on the login page without the backend:
+Login and signup work **without a backend**. Accounts are saved in the browser
+(`localStorage`) by `src/utils/fakeAuth.js`, and every new account appears in **Admin > Users**,
+where the admin can block it, approve it or change its role.
 
 | Role | Email | Password |
 | --- | --- | --- |
 | Student | student@myoc.dev | demo123 |
 | Teacher | teacher@myoc.dev | demo123 |
 | Super admin | admin@myoc.dev | demo123 |
+
+- New students are logged in right after signing up.
+- New teachers wait for admin approval (unless "Auto-approve teachers" is on in Platform Settings).
+- "Forgot password" resets the password to `demo123`.
+
+⚠️ Fake auth is only for demos: anyone can open the browser storage. When the backend is ready,
+replace the functions in `fakeAuth.js` with API calls.
 
 ## Folder structure
 
@@ -64,7 +64,7 @@ Each panel only defines its menu in its `*Layout.jsx` file.
 
 ## How data works right now
 
-Only **login** and **signup** call the backend. Everything else uses demo data saved in the
+All data (including login and signup) is demo data saved in the
 browser (`localStorage`) through small hooks in `src/hooks/`, so the whole app is clickable
 while the backend is being built:
 

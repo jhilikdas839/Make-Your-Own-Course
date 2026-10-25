@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import heroStudent from "../../assets/hero-student.webp";
+import { Link } from "react-router-dom";
 import CourseCom from "../../components/public/CourseCom";
 import About from "../../components/public/About";
 import WhyChooseUs from "../../components/public/WhyChooseUs";
@@ -12,24 +10,35 @@ import CTA from "../../components/public/CTA";
 import { instructors } from "../../data/instructors";
 import SafeImage from "../../components/common/SafeImage";
 
-const popularSearches = ["React", "Python", "UI/UX", "Data Science"];
-
 function Home() {
-  const navigate = useNavigate();
-  const [query, setQuery] = useState("");
-
-  const search = (term) => {
-    const value = term.trim();
-    navigate(value ? `/courses?search=${encodeURIComponent(value)}` : "/courses");
-  };
-
   return (
     <section className="min-h-screen bg-[#f8f8f5] px-4 py-8 md:px-8">
       <div className="mx-auto max-w-7xl">
         {/* ================= HERO ================= */}
-        <div className="relative grid min-h-[540px] items-center gap-6 overflow-hidden rounded-3xl border border-gray-200 bg-white px-6 pt-12 md:px-12 lg:grid-cols-[1.1fr_1fr] lg:pt-0">
-          {/* Text */}
-          <div className="relative z-10 max-w-xl animate-fade-up lg:py-16">
+        <div className="relative flex min-h-[520px] flex-col items-center justify-center overflow-hidden rounded-3xl border border-gray-200 bg-white text-center">
+          {/* Left decoration */}
+          <div className="absolute left-5 top-1/2 hidden -translate-y-1/2 flex-col gap-3 sm:flex md:left-12">
+            <div className="h-8 w-8 rounded-lg border border-gray-200 md:h-11 md:w-11"></div>
+            <div className="h-8 w-8 rounded-lg bg-primary md:h-11 md:w-11"></div>
+            <div className="h-8 w-8 rounded-lg border border-gray-200 md:h-11 md:w-11"></div>
+            <div className="h-8 w-8 rounded-lg bg-yellow-400 md:h-11 md:w-11"></div>
+          </div>
+
+          {/* Right decoration */}
+          <div className="absolute right-5 top-1/2 hidden -translate-y-1/2 flex-col gap-3 sm:flex md:right-12">
+            <div className="flex gap-3">
+              <div className="h-8 w-8 rounded-lg border border-gray-200 md:h-11 md:w-11"></div>
+              <div className="h-8 w-8 rounded-lg border border-gray-200 md:h-11 md:w-11"></div>
+            </div>
+            <div className="flex gap-3">
+              <div className="h-8 w-8 rounded-lg bg-primary md:h-11 md:w-11"></div>
+              <div className="h-8 w-8 rounded-lg border border-gray-200 md:h-11 md:w-11"></div>
+            </div>
+            <div className="ml-8 h-8 w-8 rounded-lg bg-yellow-400 md:h-11 md:w-11"></div>
+          </div>
+
+          {/* Hero content */}
+          <div className="relative z-10 max-w-3xl animate-fade-up px-6">
             <p className="mb-5 text-sm font-medium text-primary md:text-base">Learn • Build • Grow</p>
 
             <h1 className="font-inter text-4xl font-bold leading-[0.95] tracking-tight text-[#10131d] sm:text-5xl md:text-6xl lg:text-7xl">
@@ -37,84 +46,17 @@ function Home() {
               <span className="block">your learning</span>
             </h1>
 
-            <p className="mt-6 max-w-lg text-sm leading-7 text-gray-600 md:text-lg">
+            <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-gray-600 md:text-lg">
               Learn new skills, build your career, and grow with practical courses designed to help you move forward.
             </p>
 
-            {/* Search */}
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                search(query);
-              }}
-              className="mt-8 flex max-w-lg items-center gap-2 rounded-2xl border border-gray-200 bg-white p-2 shadow-sm transition focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10"
+            <Link
+              to="/courses"
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#10131d] px-7 py-3.5 text-sm font-medium text-white transition duration-300 hover:-translate-y-1 hover:bg-primary md:text-base"
             >
-              <i className="ri-search-line pl-3 text-lg text-gray-400"></i>
-              <input
-                type="search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="What do you want to learn?"
-                aria-label="Search courses"
-                className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none md:text-base"
-              />
-              <button
-                type="submit"
-                className="rounded-xl bg-[#10131d] px-5 py-3 text-sm font-medium text-white transition hover:bg-primary"
-              >
-                Search
-              </button>
-            </form>
-
-            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-              <span className="text-gray-400">Popular:</span>
-              {popularSearches.map((term) => (
-                <button
-                  key={term}
-                  type="button"
-                  onClick={() => search(term)}
-                  className="rounded-full border border-gray-200 px-3 py-1 text-gray-600 transition hover:border-primary hover:text-primary"
-                >
-                  {term}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Image */}
-          <div className="relative flex h-full min-h-[320px] items-end justify-center">
-            <div className="absolute bottom-0 h-[78%] w-[88%] rounded-t-[200px] bg-primary"></div>
-            <div className="absolute bottom-[18%] left-[6%] h-10 w-10 rounded-lg bg-yellow-400"></div>
-            <div className="absolute right-[4%] top-[14%] h-11 w-11 rounded-lg border border-gray-200"></div>
-
-            <img
-              src={heroStudent}
-              alt="Happy student celebrating"
-              className="relative z-10 w-[88%] max-w-[440px] animate-fade-in object-contain"
-            />
-
-            <div className="absolute left-0 top-[22%] z-20 flex animate-float items-center gap-3 rounded-2xl border border-gray-100 bg-white px-4 py-3 shadow-lg">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-                <i className="ri-book-open-line text-lg text-primary"></i>
-              </span>
-              <div>
-                <p className="text-sm font-bold text-[#10131d]">500+ courses</p>
-                <p className="text-xs text-gray-400">Learn at your pace</p>
-              </div>
-            </div>
-
-            <div
-              className="absolute bottom-[12%] right-0 z-20 flex animate-float items-center gap-3 rounded-2xl border border-gray-100 bg-white px-4 py-3 shadow-lg"
-              style={{ animationDelay: "1.5s" }}
-            >
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-yellow-50">
-                <i className="ri-star-fill text-lg text-yellow-400"></i>
-              </span>
-              <div>
-                <p className="text-sm font-bold text-[#10131d]">4.8 rating</p>
-                <p className="text-xs text-gray-400">From 20K learners</p>
-              </div>
-            </div>
+              Explore Courses
+              <i className="ri-arrow-right-line"></i>
+            </Link>
           </div>
         </div>
 

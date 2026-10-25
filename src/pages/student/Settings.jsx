@@ -10,6 +10,7 @@ import { useToast } from "../../components/common/toastContext";
 import { useCurrentUser } from "../../hooks/useAuth";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { clearSession, updateSessionUser } from "../../utils/auth";
+import { fakeChangePassword } from "../../utils/fakeAuth";
 
 const tabs = [
   { name: "Profile", value: "profile", icon: "ri-user-line" },
@@ -90,9 +91,10 @@ function Settings() {
   const updatePassword = (event) => {
     event.preventDefault();
     if (!passwords.current) return toast("Enter your current password.", "error");
-    if (passwords.next.length < 8) return toast("New password must be at least 8 characters.", "error");
+    if (passwords.next.length < 6) return toast("New password must be at least 6 characters.", "error");
     if (passwords.next !== passwords.confirm) return toast("New passwords don't match.", "error");
-    // TODO: send to the backend "change password" endpoint.
+    const result = fakeChangePassword(user.email, passwords.current, passwords.next);
+    if (result.error) return toast(result.error, "error");
     setPasswords({ current: "", next: "", confirm: "" });
     toast("Password updated.");
   };
@@ -161,7 +163,7 @@ function Settings() {
 
           {activeTab === "security" && (
             <>
-              <Card title="Password" text="Use at least 8 characters.">
+              <Card title="Password" text="Use at least 6 characters.">
                 <form onSubmit={updatePassword} className="grid gap-5 md:max-w-md">
                   {[
                     ["current", "Current Password"],

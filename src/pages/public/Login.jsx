@@ -1,20 +1,12 @@
 
-import axios from "axios";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Modal from "../../components/common/Modal";
 import Button from "../../components/common/Button";
 import { useToast } from "../../components/common/toastContext";
 import { inputClass } from "../../components/common/formStyles";
-import { API_URL, DEMO_PASSWORD, DEMO_USERS, ROLE_HOME, findDemoUser, isDemoLoginEnabled, saveSession } from "../../utils/auth";
-
-const getErrorMessage = (error) => {
-  if (!error.response) return "Unable to connect to the server. Please try again in a moment.";
-  const { status, data } = error.response;
-  if (status === 401 || status === 403) return "Wrong email or password.";
-  if (status >= 500) return "Server error. Please try again later.";
-  return data?.message || "Something went wrong. Please try again.";
-};
+import { DEMO_USERS, ROLE_HOME, saveSession } from "../../utils/auth";
+import { DEMO_PASSWORD, fakeLogin, fakeResetPassword } from "../../utils/fakeAuth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,50 +29,38 @@ const Login = () => {
     navigate(from && (user.role === "admin" || !from.startsWith("/admin")) ? from : home, { replace: true });
   };
 
-  const handleLogin = async (e) => {
+  const startSession = (user, remember) => {
+    saveSession({ token: `fake-token-${user.id}`, user }, remember);
+    finishLogin(user);
+  };
+
+  const handleLogin = (e) => {
     e.preventDefault();
     if (!email.trim() || !password.trim()) {
       toast("Please enter your email and password.", "error");
       return;
     }
 
-    // Demo accounts log in without the backend (only when demo login is enabled).
-    const demoUser = isDemoLoginEnabled && findDemoUser(email, password);
-    if (demoUser) {
-      saveSession({ token: `demo-${demoUser.role}`, user: demoUser }, rememberMe);
-      finishLogin(demoUser);
-      return;
-    }
-
     setLoading(true);
-    try {
-      const { data } = await axios.post(`${API_URL}/api/auth/login`, {
-        email: email.trim(),
-        password,
-      });
-
-      // The backend may return the user in different shapes, so read it safely.
-      const apiUser = data?.user || data?.data?.user || data?.data || {};
-      const user = {
-        id: apiUser._id || apiUser.id,
-        name: apiUser.name || email.split("@")[0],
-        email: apiUser.email || email.trim(),
-        role: apiUser.role || data?.role || "student",
-      };
-
-      saveSession({ token: data?.token || data?.data?.token, user }, rememberMe);
-      finishLogin(user);
-    } catch (error) {
-      toast(getErrorMessage(error), "error");
-    } finally {
+    // Short delay so the button feels like a real login request.
+    setTimeout(() => {
+      const result = fakeLogin(email, password);
       setLoading(false);
-    }
+      if (result.error) {
+        toast(result.error, "error");
+        return;
+      }
+      startSession(result.user, rememberMe);
+    }, 500);
   };
 
   const demoLogin = (role) => {
-    const user = DEMO_USERS[role];
-    saveSession({ token: `demo-${role}`, user }, true);
-    finishLogin(user);
+    const result = fakeLogin(DEMO_USERS[role].email, DEMO_PASSWORD);
+    if (result.error) {
+      toast(result.error, "error");
+      return;
+    }
+    startSession(result.user, true);
   };
 
   const sendResetLink = (e) => {
@@ -89,8 +69,11 @@ const Login = () => {
       toast("Enter a valid email address.", "error");
       return;
     }
-    // TODO: connect to the backend "forgot password" endpoint when it is ready.
-    toast(`If ${resetEmail} has an account, a reset link is on its way.`, "info");
+    if (fakeResetPassword(resetEmail)) {
+      toast(`Password reset! Log in with "${DEMO_PASSWORD}" and change it in Settings.`);
+    } else {
+      toast("No account found with this email.", "error");
+    }
     setForgotOpen(false);
     setResetEmail("");
   };
@@ -385,11 +368,11 @@ const Login = () => {
           {/* ================= SIGN UP =============================== */}
           {/* ========================================================= */}
 
-          {isDemoLoginEnabled && (
+          {(
               <div className="mt-7 rounded-2xl border border-dashed border-gray-300 p-4">
-                <p className="text-xs font-medium text-gray-500">Demo access (no backend needed)</p>
+                <p className="text-xs font-medium text-gray-500">Demo accounts</p>
                 <p className="mt-1 text-[11px] leading-5 text-gray-400">
-                  Or log in with student@myoc.dev, teacher@myoc.dev or admin@myoc.dev and password {DEMO_PASSWORD}
+                  Click one, or log in with student@myoc.dev, teacher@myoc.dev or admin@myoc.dev and password {DEMO_PASSWORD}
                 </p>
                 <div className="mt-3 grid grid-cols-3 gap-2">
                   {["student", "teacher", "admin"].map((role) => (
@@ -431,7 +414,7 @@ const Login = () => {
         open={forgotOpen}
         onClose={() => setForgotOpen(false)}
         title="Reset your password"
-        description="Enter your account email and we'll send you a reset link."
+        description="Enter your account email. Your password will be reset to the demo password."
         size="sm"
       >
         <form onSubmit={sendResetLink} className="space-y-4">
@@ -443,7 +426,7 @@ const Login = () => {
             className={inputClass}
             autoFocus
           />
-          <Button type="submit" className="w-full" size="lg">Send reset link</Button>
+          <Button type="submit" className="w-full" size="lg">Reset password</Button>
         </form>
       </Modal>
     </div>

@@ -1,15 +1,13 @@
 
 import { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "../../components/common/toastContext";
-import { API_URL } from "../../utils/auth";
-import { usePlatformSettings } from "../../hooks/usePlatformData";
+import { ROLE_HOME, saveSession } from "../../utils/auth";
+import { fakeSignup } from "../../utils/fakeAuth";
 
 const Signup = () => {
   const navigate = useNavigate();
   const toast = useToast();
-  const [platform] = usePlatformSettings();
 
   // ================= STATES =================
 
@@ -24,13 +22,8 @@ const Signup = () => {
 
   // ================= SIGNUP FUNCTION =================
 
-  const handleSignup = async (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
-
-    if (!platform.allowSignups) {
-      toast("New sign-ups are paused right now. Please try again later.", "error");
-      return;
-    }
 
     // Empty field validation
     if (
@@ -41,6 +34,16 @@ const Signup = () => {
       !role
     ) {
       toast("Please fill in all fields.", "error");
+      return;
+    }
+
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      toast("Enter a valid email address.", "error");
+      return;
+    }
+
+    if (password.length < 6) {
+      toast("Password must be at least 6 characters.", "error");
       return;
     }
 
@@ -57,35 +60,26 @@ const Signup = () => {
     }
 
     setLoading(true);
-
-    try {
-      await axios.post(
-        `${API_URL}/api/auth/register`,
-        {
-          name,
-          email,
-          password,
-          role,
-        }
-      );
-
-
-      toast("Account created! Please log in.");
-
-      // Redirect to login
-      navigate("/login");
-
-    } catch (error) {
-
-      toast(
-        error.response?.data?.message ||
-        "Signup failed. Please try again.",
-        "error"
-      );
-
-    } finally {
+    // Short delay so the button feels like a real signup request.
+    setTimeout(() => {
+      const result = fakeSignup({ name, email, password, role });
       setLoading(false);
-    }
+
+      if (result.error) {
+        toast(result.error, "error");
+        return;
+      }
+      if (result.pending) {
+        toast("Account created! An admin will approve your teacher account soon.", "info");
+        navigate("/login");
+        return;
+      }
+
+      // Log the new user in straight away.
+      saveSession({ token: `fake-token-${result.user.id}`, user: result.user }, true);
+      toast(`Welcome, ${result.user.name.split(" ")[0]}! Your account is ready.`);
+      navigate(ROLE_HOME[result.user.role] || "/");
+    }, 500);
   };
 
   return (
